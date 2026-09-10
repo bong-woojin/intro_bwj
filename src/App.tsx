@@ -6,6 +6,7 @@ import { Contact } from '@/components/sections/Contact'
 import { Hero } from '@/components/sections/Hero'
 import { Projects } from '@/components/sections/Projects'
 import { Skills } from '@/components/sections/Skills'
+import { Strengths } from '@/components/sections/Strengths'
 
 /** true로 바꾸면 인트로를 탭당 한 번만 보여준다 */
 const SHOW_ONCE_PER_SESSION = false
@@ -20,8 +21,14 @@ function shouldPlayIntro(): boolean {
 function App() {
   const [showIntro, setShowIntro] = useState(shouldPlayIntro)
 
+  /* 첫 화면 그림의 등장 연출은 인트로가 걷히기 시작할 때 함께 시작한다.
+     로드와 동시에 돌리면 인트로에 가려진 채로 끝나 버린다. */
+  const [heroReady, setHeroReady] = useState(() => !shouldPlayIntro())
+  const startHero = useCallback(() => setHeroReady(true), [])
+
   const finishIntro = useCallback(() => {
     setShowIntro(false)
+    setHeroReady(true)
     if (SHOW_ONCE_PER_SESSION) sessionStorage.setItem(SESSION_KEY, '1')
   }, [])
 
@@ -39,7 +46,7 @@ function App() {
     <>
       {showIntro && (
         <>
-          <IntroOverlay onFinish={finishIntro} />
+          <IntroOverlay onExitStart={startHero} onFinish={finishIntro} />
           <button
             type="button"
             onClick={finishIntro}
@@ -56,7 +63,8 @@ function App() {
         <Header />
         <main>
           {/* Hero가 첫 화면을 채우면서 About(자기소개)까지 함께 담는다 */}
-          <Hero />
+          <Hero heroReady={heroReady} />
+          <Strengths />
           <Skills />
           <Projects />
           <Contact />

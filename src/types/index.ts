@@ -1,6 +1,17 @@
 export interface SectionId {
-  id: 'about' | 'skills' | 'projects' | 'contact'
+  id: 'about' | 'strengths' | 'skills' | 'projects' | 'contact'
   label: string
+}
+
+/** 강점 카드에 들어가는 움직이는 그림 */
+export type StrengthVisualName = 'quality' | 'structure' | 'ai'
+
+export interface Strength {
+  visual: StrengthVisualName
+  title: string
+  description: string
+  /** 주장을 받치는 근거. 숫자가 있으면 함께 적는다. */
+  evidence: string[]
 }
 
 export interface SkillGroup {
@@ -47,6 +58,7 @@ export interface Profile {
   introLines: string[]
   tagline: string
   introduction: string[]
+  strengths: Strength[]
   skills: SkillGroup[]
   projects: Project[]
   contacts: ContactLink[]

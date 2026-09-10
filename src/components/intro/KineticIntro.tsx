@@ -30,7 +30,8 @@ export const KINETIC_DURATION = ROLE_AT + ROLE_DURATION + 250
 
 export function KineticIntro() {
   return (
-    <div className="relative flex flex-col items-center px-6 text-center">
+    /* 폭을 넉넉히 잡아 둔다. 지정하지 않으면 이름 너비에 맞춰 좁아져 문구가 줄바꿈된다. */
+    <div className="relative flex w-full max-w-4xl flex-col items-center px-6 text-center">
       {/* 문구 — 마스크 안에서 아래→위로 밀려 지나간다.
           흐름에서 빼내 이름과 같은 자리에 겹쳐 놓는다. 그래야 이름과 직함이
           문구 높이만큼 아래로 밀리지 않고 화면 정중앙에 온다.
@@ -42,7 +43,8 @@ export function KineticIntro() {
           return (
             <p
               key={words.join(' ')}
-              className={`absolute inset-0 flex flex-wrap items-center justify-center gap-x-[0.3em] text-2xl font-medium tracking-tight sm:text-4xl ${
+              /* 어절이 한 줄에 이어져야 리듬이 살아난다. 좁은 화면에서는 글자를 줄인다. */
+              className={`absolute inset-0 flex items-center justify-center gap-x-[0.3em] text-xl font-medium tracking-tight whitespace-nowrap sm:text-3xl md:text-4xl ${
                 isLast ? 'text-accent' : 'text-fg/85'
               }`}
             >
@@ -74,16 +76,15 @@ export function KineticIntro() {
           style={{ animationDelay: `${NAME_AT}ms`, animationDuration: `${TRACK_DURATION}ms` }}
         >
           {NAME_CHARS.map((char, index) => (
-            <span key={`${char}-${index}`} className="kin-mask">
-              <span
-                className="kin-char"
-                style={{
-                  animationDelay: `${NAME_AT + index * CHAR_STAGGER}ms`,
-                  animationDuration: `${CHAR_DURATION}ms`,
-                }}
-              >
-                {char}
-              </span>
+            <span
+              key={`${char}-${index}`}
+              className="kin-char"
+              style={{
+                animationDelay: `${NAME_AT + index * CHAR_STAGGER}ms`,
+                animationDuration: `${CHAR_DURATION}ms`,
+              }}
+            >
+              {char}
             </span>
           ))}
         </span>

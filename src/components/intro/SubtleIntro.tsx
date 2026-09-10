@@ -20,13 +20,13 @@ export const SUBTLE_DURATION = ROLE_AT + 900
 
 export function SubtleIntro() {
   return (
-    <div className="relative flex flex-col items-center px-6 text-center">
+    <div className="relative flex w-full max-w-4xl flex-col items-center px-6 text-center">
       {/* 한 줄씩 스쳐 지나가는 문구 — 흐름에서 빼내 이름과 같은 자리에 겹쳐 둔다 */}
       <div className="pointer-events-none absolute inset-0">
         {LINES.map((line, index) => (
           <p
             key={line}
-            className="subtle-line absolute inset-0 flex items-center justify-center text-2xl font-medium tracking-tight text-fg/85 sm:text-4xl"
+            className="subtle-line absolute inset-0 flex items-center justify-center text-xl font-medium tracking-tight whitespace-nowrap text-fg/85 sm:text-3xl md:text-4xl"
             style={{
               animationDelay: `${index * LINE_INTERVAL}ms`,
               animationDuration: `${LINE_DURATION}ms`,

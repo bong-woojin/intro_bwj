@@ -2,6 +2,7 @@ import type { Profile, ProjectCategory, SectionId } from '@/types'
 
 export const SECTIONS: SectionId[] = [
   { id: 'about', label: 'About' },
+  { id: 'strengths', label: 'Strengths' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
   { id: 'contact', label: 'Contact' },
@@ -22,12 +23,55 @@ export const PROJECT_CATEGORIES: { id: ProjectCategory; label: string }[] = [
 export const profile: Profile = {
   name: '봉우진',
   role: 'Frontend Developer',
-  introLines: ['안녕하세요', '화면부터 배포까지', '프론트엔드 개발자'],
-  tagline: '서비스 하나를 화면부터 배포까지 혼자 끝냅니다.',
+  introLines: [
+    '안녕하세요',
+    '퍼블리셔에서 프론트엔드까지',
+    '그리고 AI까지',
+    '발전하는 프론트엔드',
+  ],
+  tagline: '화면부터 배포까지, 서비스 하나를 끝까지 만듭니다.',
   introduction: [
-    '주식·투자 도메인에서 사내 전 서비스의 화면을 만들어 온 프론트엔드 개발자입니다. IT서비스팀 1인 웹 퍼블리셔로 신규 서비스 런칭 3건과 기존 서비스 운영을 병행하며, 마크업부터 API 연동, 배포, 장애 대응까지 프론트엔드 전반을 담당했습니다.',
-    'Vue 3·Nuxt 3 서비스에서는 화면 개발과 공통 컴포넌트 아키텍처 설계를, React 19·Next.js 16 기반 SEO 페이지에서는 환경 구성부터 SSR 설계와 배포까지 단독으로 맡았습니다.',
-    '화면 구현에서 멈추지 않고 SEO·웹표준·웹접근성까지 함께 챙겨 Lighthouse 주요 항목을 90점대로 올리고 Core Web Vitals 전 항목을 통과시켰습니다. 사내에 AI 활용 환경 도입을 제안해 컴포넌트 제너레이터를 직접 만들기도 했습니다.',
+    '웹 퍼블리셔로 시작해 프론트엔드 개발까지 범위를 넓혀왔습니다. 주식·투자 도메인에서 사내 서비스의 화면을 혼자 맡아, 새 서비스를 열고 이어서 운영해 왔습니다.',
+    'Vue와 React 양쪽에서 화면 개발과 공통 컴포넌트 설계부터 배포까지 담당했습니다. 가장 신경 쓰는 건 나중에 고칠 곳을 줄이는 일입니다. 같은 UI가 두 번 나오면 공통으로 묶고, 조건이 늘어날 걸 예상해 구조를 열어둡니다.',
+    '마크업 구조와 접근성, 검색 노출, 로딩 속도까지 눈에 보이지 않는 부분도 화면의 품질이라고 봅니다. AI도 개발 과정에 적극적으로 쓰며, 반복되는 작업은 도구로 만들어 덜어냅니다.',
+  ],
+  /* 헤더 로고와 첫 화면 그림의 세 축(Publisher · Frontend · AI)과 순서를 맞춘다 */
+  strengths: [
+    {
+      visual: 'quality',
+      title: '화면 품질을 수치로 증명합니다',
+      description:
+        '눈에 보이지 않는 부분까지 챙겼습니다. 시맨틱 마크업과 접근성, 검색 대응을 함께 맡아왔습니다.',
+      evidence: [
+        '웹표준·웹접근성 준수율 100%',
+        '3개 서비스 312개 파일 SEO 전수 개선',
+        'Lighthouse 90점대 · Core Web Vitals 전 항목 통과',
+        '320~768px 전 구간 동일 렌더링 확보',
+      ],
+    },
+    {
+      visual: 'structure',
+      title: '반복을 구조로 바꿉니다',
+      description:
+        '같은 작업이 두 번 나오면 공통으로 묶었습니다. 고칠 곳을 줄이는 것이 곧 실수를 줄이는 일이라고 봅니다.',
+      evidence: [
+        'Vue 3·Nuxt 3 기반 전 화면 개발 및 공통 컴포넌트 아키텍처 설계',
+        'React·Next.js SSR 구조 설계부터 배포까지 단독 수행',
+        '신규 기능 추가 시 화면 제작부터 API 연동까지 단독 처리',
+        '반복 UI를 단일 컴포넌트로 통합해 유지보수 지점 축소',
+      ],
+    },
+    {
+      visual: 'ai',
+      title: 'AI를 도구로 만들어 씁니다',
+      description: '쓰는 데서 멈추지 않고 반복 작업을 대신할 도구로 만들었습니다.',
+      evidence: [
+        '사내 AI 활용 환경 도입 제안',
+        '컴포넌트 제너레이터 직접 개발',
+        'AI 크롤러 허용 정책 및 llms.txt 설계',
+        '신규 스택 도입 기간 단축',
+      ],
+    },
   ],
   skills: [
     { category: 'Language', items: ['TypeScript', 'JavaScript (ES6+)', 'HTML5', 'CSS3'] },

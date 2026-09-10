@@ -12,19 +12,24 @@ const VARIANTS = {
 } as const
 
 interface IntroOverlayProps {
+  /** 오버레이가 위로 걷히기 시작할 때 호출된다. 뒤쪽 화면의 연출을 이때 시작시킨다. */
+  onExitStart: () => void
   /** 오버레이가 완전히 걷힌 뒤 호출된다 */
   onFinish: () => void
 }
 
 /** 배경과 걷힘 처리를 맡는 껍데기. 안쪽 연출은 variant.ts로 고른다. */
-export function IntroOverlay({ onFinish }: IntroOverlayProps) {
+export function IntroOverlay({ onExitStart, onFinish }: IntroOverlayProps) {
   const [exiting, setExiting] = useState(false)
   const { Content, duration } = VARIANTS[INTRO_VARIANT]
 
   useEffect(() => {
-    const toExit = window.setTimeout(() => setExiting(true), duration)
+    const toExit = window.setTimeout(() => {
+      setExiting(true)
+      onExitStart()
+    }, duration)
     return () => window.clearTimeout(toExit)
-  }, [duration])
+  }, [duration, onExitStart])
 
   useEffect(() => {
     if (!exiting) return
