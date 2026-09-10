@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { KINETIC_DURATION, KineticIntro } from './KineticIntro'
+import { Starfield } from './Starfield'
 import { SUBTLE_DURATION, SubtleIntro } from './SubtleIntro'
 import { INTRO_VARIANT } from './variant'
 
@@ -38,13 +39,27 @@ export function IntroOverlay({ onFinish }: IntroOverlayProps) {
         exiting ? 'intro-exit' : ''
       }`}
     >
-      {/* 배경 글로우 */}
+      {/* 별하늘 — 가장 뒤에 깔린다. 보라 영역과 같은 크기라 그 안에만 보인다. */}
+      <Starfield />
+
+      {/* 바깥 번짐 — 보라 영역의 가장자리를 만든다 */}
       <div
-        className="intro-glow pointer-events-none absolute h-[46rem] w-[46rem] rounded-full blur-[120px]"
+        className="intro-nebula pointer-events-none absolute h-[46rem] w-[46rem] rounded-full blur-[130px]"
         style={{
-          background: 'radial-gradient(circle, rgba(124,58,237,0.55) 0%, rgba(124,58,237,0) 70%)',
+          background:
+            'radial-gradient(circle, rgba(109,40,217,0.5) 0%, rgba(88,28,135,0.3) 48%, rgba(76,29,149,0) 72%)',
         }}
       />
+
+      {/* 안쪽 핵 — 좁고 진하게. 두 겹을 겹쳐야 평면적으로 보이지 않는다. */}
+      <div
+        className="intro-glow pointer-events-none absolute h-[26rem] w-[26rem] rounded-full blur-[90px]"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(196,181,253,0.6) 0%, rgba(139,92,246,0.72) 34%, rgba(109,40,217,0) 74%)',
+        }}
+      />
+
       <Content />
     </div>
   )

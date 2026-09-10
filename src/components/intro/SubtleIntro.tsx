@@ -26,7 +26,7 @@ export function SubtleIntro() {
         {LINES.map((line, index) => (
           <p
             key={line}
-            className="subtle-line absolute inset-0 flex items-center justify-center text-2xl font-medium tracking-tight text-muted sm:text-4xl"
+            className="subtle-line absolute inset-0 flex items-center justify-center text-2xl font-medium tracking-tight text-fg/85 sm:text-4xl"
             style={{
               animationDelay: `${index * LINE_INTERVAL}ms`,
               animationDuration: `${LINE_DURATION}ms`,
