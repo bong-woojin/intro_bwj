@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import { useInView } from '@/hooks/useInView'
+import { revealDelay } from '@/lib/reveal'
 
 interface SectionProps {
   id: string
@@ -8,12 +10,20 @@ interface SectionProps {
 }
 
 export function Section({ id, title, description, children }: SectionProps) {
+  const { ref, inView } = useInView<HTMLElement>()
+
   return (
     <section id={id} className="mx-auto w-full max-w-5xl px-6 py-20 sm:py-28">
-      <header className="mb-10">
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h2>
-        {description && <p className="mt-3 text-muted">{description}</p>}
-        <div className="mt-5 h-px w-16 bg-accent" />
+      <header ref={ref} className={`reveal-group mb-10 ${inView ? 'is-visible' : ''}`}>
+        <h2 className="reveal text-2xl font-bold tracking-tight sm:text-3xl" style={revealDelay(0)}>
+          {title}
+        </h2>
+        {description && (
+          <p className="reveal mt-3 text-muted" style={revealDelay(90)}>
+            {description}
+          </p>
+        )}
+        <div className="reveal mt-5 h-px w-16 bg-accent" style={revealDelay(160)} />
       </header>
       {children}
     </section>

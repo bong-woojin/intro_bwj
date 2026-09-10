@@ -8,16 +8,30 @@ export interface SkillGroup {
   items: string[]
 }
 
+/**
+ * 프로젝트 성격. Projects 섹션의 탭이 이 값으로 갈린다.
+ * 기술 스택으로 나누지 않는 이유는 한쪽으로 쏠려 필터의 의미가 없기 때문이다.
+ */
+export type ProjectCategory = 'launch' | 'improve' | 'landing' | 'personal'
+
 export interface Project {
   id: string
   title: string
   period: string
+  category: ProjectCategory
+  /** 대표작 표시. 탭과 무관하게 눈에 띄게 한다. */
+  featured?: boolean
   summary: string
   description: string
   stack: string[]
   /** 배포된 사이트 주소 (없으면 생략) */
   demoUrl?: string
   repoUrl?: string
+  /**
+   * 링크를 걸 수 없는 이유. 예: '증권사 앱 내장', '서비스 종료', '사내 운영 페이지'.
+   * 링크가 없는 자리를 비워 두면 왜 없는지 알 수 없으므로 이 문구로 대신한다.
+   */
+  linkNote?: string
 }
 
 export interface ContactLink {

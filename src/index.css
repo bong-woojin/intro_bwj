@@ -39,6 +39,70 @@
 }
 
 /* ---------------------------------------------------------------
+   본문 — 스크롤에 따라 나타나는 요소
+   묶음(.reveal-group)이 화면에 들어오면 그 안의 .reveal들이 차례로 올라온다.
+   요소마다 관찰자를 붙이지 않고 묶음 하나만 관찰한 뒤 지연으로 차례를 만든다.
+   --------------------------------------------------------------- */
+
+/* 차례를 만드는 지연은 --reveal-delay로 받는다.
+   inline style의 transition-delay를 쓰면 hover 같은 다른 전환까지 함께 늦어진다. */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    border-color 250ms ease;
+}
+
+.reveal-group.is-visible .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* 프로젝트 카드 — 스크롤로 처음 보일 때와 탭을 바꿀 때 모두 다시 올라온다.
+   .reveal은 transition이라 다시 마운트돼도 재생되지 않으므로 animation을 쓴다. */
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.card-hidden {
+  opacity: 0;
+}
+
+.card-in {
+  animation: card-in 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* 아래로 내리라는 표시 — 가는 선을 따라 빛이 흘러내린다 */
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  25%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(320%);
+    opacity: 0;
+  }
+}
+
+.scroll-cue-bar {
+  animation: scroll-cue 1.9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* ---------------------------------------------------------------
    인트로 오버레이
    두 가지 연출을 모두 유지한다. 전환은 components/intro/variant.ts 한 줄.
      - subtle  : 페이드 + 블러 (잔잔한 버전)
@@ -352,5 +416,19 @@
   .star {
     animation: none !important;
     opacity: var(--star-peak, 0.7);
+  }
+
+  .scroll-cue-bar {
+    animation: none !important;
+  }
+
+  /* 나타나는 연출 없이 처음부터 보이게 둔다 */
+  .reveal,
+  .card-hidden,
+  .card-in {
+    opacity: 1;
+    transform: none;
+    transition: none !important;
+    animation: none !important;
   }
 }

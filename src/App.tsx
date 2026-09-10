@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { IntroOverlay } from '@/components/intro/IntroOverlay'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
-import { About } from '@/components/sections/About'
 import { Contact } from '@/components/sections/Contact'
 import { Hero } from '@/components/sections/Hero'
 import { Projects } from '@/components/sections/Projects'
@@ -56,8 +55,8 @@ function App() {
       <div inert={showIntro}>
         <Header />
         <main>
+          {/* Hero가 첫 화면을 채우면서 About(자기소개)까지 함께 담는다 */}
           <Hero />
-          <About />
           <Skills />
           <Projects />
           <Contact />
