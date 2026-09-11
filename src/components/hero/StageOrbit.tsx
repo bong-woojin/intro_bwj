@@ -35,7 +35,7 @@ const POSITIONS = [
 
 const RINGS = STAGES.map((stage, index) => ({ ...stage, ...POSITIONS[index] }))
 
-const CAPTION = '셋이 겹치는 자리에서 일합니다'
+const CAPTION = '세 가지를 아우르는 프론트엔드'
 
 function vars(entries: Record<string, string>): CSSProperties {
   return entries as CSSProperties

@@ -24,7 +24,10 @@ export function useInView<T extends HTMLElement>(rootMargin = '0px 0px -12% 0px'
         setInView(true)
         observer.disconnect()
       },
-      { rootMargin, threshold: 0.12 },
+      /* threshold는 '요소 전체 넓이 대비 보이는 비율'이다.
+         화면보다 긴 요소는 가능한 최대 비율 자체가 작아서(화면높이 / 요소높이)
+         값을 올리면 한참 스크롤해야 감지된다. 시점은 rootMargin으로만 잡는다. */
+      { rootMargin, threshold: 0 },
     )
 
     observer.observe(element)

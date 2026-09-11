@@ -1,6 +1,11 @@
 export interface SectionId {
   id: 'about' | 'strengths' | 'skills' | 'projects' | 'contact'
   label: string
+  /**
+   * 눌렀을 때 이동할 주소. 기본은 '#' + id.
+   * 관찰 대상과 이동 지점이 다를 때만 지정한다.
+   */
+  href?: string
 }
 
 /** 강점 카드에 들어가는 움직이는 그림 */

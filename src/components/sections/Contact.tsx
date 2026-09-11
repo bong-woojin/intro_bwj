@@ -20,7 +20,7 @@ export function Contact() {
                 href={contact.href}
                 target={isExternal ? '_blank' : undefined}
                 rel={isExternal ? 'noreferrer' : undefined}
-                className="flex items-center justify-between rounded-2xl border border-line bg-surface/40 px-6 py-5 transition-colors hover:border-accent/60"
+                className="flex items-center justify-between rounded-2xl border border-line bg-surface/40 px-6 py-5 transition duration-200 hover:border-accent/60 active:scale-[0.99]"
               >
                 <span className="text-sm font-semibold tracking-[0.2em] text-accent uppercase">
                   {contact.label}

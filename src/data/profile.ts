@@ -1,7 +1,8 @@
 import type { Profile, ProjectCategory, SectionId } from '@/types'
 
 export const SECTIONS: SectionId[] = [
-  { id: 'about', label: 'About' },
+  /* 첫 화면 전체가 소개이므로 블록 중간이 아니라 맨 위로 보낸다 */
+  { id: 'about', label: 'About', href: '#top' },
   { id: 'strengths', label: 'Strengths' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
@@ -87,6 +88,29 @@ export const profile: Profile = {
     { category: 'Tooling', items: ['Git', 'PM2', 'Nginx', 'W3C Validator'] },
   ],
   projects: [
+    /* ── 개인 프로젝트를 넣는 자리 ─────────────────────────────────
+       아래 주석을 풀고 내용을 채우면 '개인 프로젝트' 탭이 저절로 생깁니다.
+       항목이 하나도 없는 분류는 탭에 나타나지 않습니다.
+
+       프로젝트는 최신순으로 정렬하므로, 기간에 맞는 자리에 옮겨 두세요.
+
+    {
+      id: 'my-project',                  // 영문 소문자, 다른 항목과 겹치지 않게
+      title: '프로젝트 이름',
+      period: '2026.09',                 // '2026.09' 또는 '2026.01 – 2026.03', 진행 중이면 '2026.09 – 현재'
+      category: 'personal',              // 이 줄이 개인 프로젝트 탭을 만듭니다
+      featured: true,                    // 대표작으로 표시 (필요 없으면 줄째 지우기)
+      summary: '한 줄 요약. 무엇을 만들었는지 한 문장으로.',
+      description:
+        '어떤 문제를 왜 그렇게 풀었는지 적습니다. 혼자 만든 것이라면 어떤 판단을 했는지가 회사 프로젝트보다 더 잘 드러납니다.',
+      stack: ['React 19', 'TypeScript', 'Vite'],
+      demoUrl: 'https://example.com',    // 배포 주소 (없으면 줄째 지우기)
+      repoUrl: 'https://github.com/bong-woojin/example',  // 저장소 (없으면 줄째 지우기)
+      // demoUrl과 repoUrl을 둘 다 지웠다면 아래로 이유를 밝힐 수 있습니다
+      // linkNote: '개발 중',
+    },
+
+       ──────────────────────────────────────────────────────────── */
     {
       id: 'ai-signal-pro-seo',
       title: 'AI시그널프로 SEO 전용 페이지',
@@ -109,7 +133,7 @@ export const profile: Profile = {
     },
     {
       id: 'ai-signal',
-      title: 'AI시그널 — 주식 종목추천 서비스',
+      title: 'AI시그널프로 — 주식 종목추천 서비스',
       period: '2025.01 – 현재',
       category: 'launch',
       featured: true,
@@ -226,8 +250,11 @@ export const profile: Profile = {
     },
   ],
   contacts: [
-    { label: 'Email', value: 'bwj1993@emoney.co.kr', href: 'mailto:bwj1993@emoney.co.kr' },
-    // TODO: 실제 주소를 알려 주시면 채웁니다
-    // { label: 'GitHub', value: 'github.com/<id>', href: 'https://github.com/<id>' },
+    { label: 'Email', value: 'bwj1993@naver.com', href: 'mailto:bwj1993@naver.com' },
+    {
+      label: 'GitHub',
+      value: 'github.com/bong-woojin',
+      href: 'https://github.com/bong-woojin',
+    },
   ],
 }

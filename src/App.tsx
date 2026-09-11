@@ -62,7 +62,7 @@ function App() {
       <div inert={showIntro}>
         <Header />
         <main>
-          {/* Hero가 첫 화면을 채우면서 About(자기소개)까지 함께 담는다 */}
+          {/* Hero가 첫 화면을 채우면서 소개 글까지 함께 담는다 */}
           <Hero heroReady={heroReady} />
           <Strengths />
           <Skills />
