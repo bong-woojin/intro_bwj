@@ -116,6 +116,33 @@
   transform: perspective(900px) rotateX(6deg) translateY(-6px);
 }
 
+/* 자세히 보기 팝업 — 아래에서 살짝 떠오르고, 뒤쪽은 어둡게 흐려진다 */
+@keyframes work-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+}
+
+@keyframes work-dialog-backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.work-dialog[open] {
+  animation: work-dialog-in 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-dialog::backdrop {
+  background: rgb(11 11 15 / 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.work-dialog[open]::backdrop {
+  animation: work-dialog-backdrop-in 300ms ease;
+}
+
 /* 서랍 — 시간은 Works.tsx의 DRAWER_MS와 짝을 이룬다 */
 .works-drawer {
   transition: height 700ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -125,6 +152,11 @@
   .works-tilt,
   .works-drawer {
     transition: none;
+  }
+
+  .work-dialog[open],
+  .work-dialog[open]::backdrop {
+    animation: none;
   }
 
   .works-item:hover .works-tilt {

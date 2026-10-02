@@ -40,7 +40,7 @@ src/
 ├─ components/
 │  ├─ intro/              첫 진입 인트로 (두 연출 + 껍데기 + 별하늘)
 │  ├─ hero/StageOrbit.tsx 첫 화면 오른쪽 세 원 그림
-│  ├─ works/DeviceStage   Works 전시대의 모니터·폰 틀
+│  ├─ works/              DeviceStage(모니터·폰 틀), WorkDialog(자세히 보기 팝업), ProjectMeta
 │  ├─ layout/             Header(로고 + 내비), Footer, BrandMark
 │  ├─ sections/           Hero, Strengths, Skills, Works, Experience, Contact
 │  └─ ui/                 Section(섹션 공통 껍데기), Disclosure(자세히 펼침), ScrollCue
@@ -217,7 +217,8 @@ Strengths 카드는 **주장(제목) + 근거(구분선 아래 목록)** 구조�
 
 한 프로젝트가 양쪽에 다 나올 수 있다. 데이터는 `profile.projects` 하나이고 `lib/projects.ts`가 갈라 준다. 회사 정보는 `profile.company`.
 
-- **Works 카드에는 설명(description)을 넣지 않는다.** 3열 카드는 폭이 좁아 긴 글이 세로로 끝없이 늘어나고 전시대가 글에 묻힌다. 넣어 봤다가 뺐다. 긴 설명은 Experience의 `자세히`에서 읽는다.
+- **Works 카드에는 설명(description)을 넣지 않는다.** 3열 카드는 폭이 좁아 긴 글이 세로로 끝없이 늘어나고 전시대가 글에 묻힌다. 카드 안에 펼침으로 넣어 봤다가 뺐다. 전시대나 `자세히 보기`를 누르면 섹션 폭의 팝업(`WorkDialog`)에서 큰 화면과 설명을 나란히 보여 준다. 팝업은 네이티브 `<dialog>`의 `showModal()`이라 Esc·포커스 가두기·포커스 되돌리기를 브라우저가 맡는다.
+- **description은 팝업과 Experience의 `자세히` 양쪽에 나온다.** 한 곳만 고치면 된다. 길면 아무도 안 읽으므로 짧게 쓴다.
 - **Works는 첫 줄만 펼치고 나머지는 서랍에 넣는다.** 계속 추가될 목록이라서다. 최신순이라 새 작업이 첫 줄에 온다.
 - **Works에서 Experience로, Experience에서 Works로 건너가는 링크는 두지 않는다.** 읽던 자리를 잃는다. Experience에는 `사이트 보기 →`(외부 링크)만 단다.
 - **대표작(Main) 표시는 없앴다.** 8개 중 4개에 붙어 강조 효과가 없었다.
@@ -289,6 +290,6 @@ npm run dev
 ## 남은 작업
 
 - **AI시그널프로 SEO 페이지** — 스크린샷과 `demoUrl`이 비어 있어 Works에서 흰 화면, 링크 없음으로 나온다.
-- **개인 프로젝트의 설명** — 숙소 예약·COINFLOW의 description은 Works에서 빠졌고 Experience에도 없어서 지금 어디에도 보이지 않는다. 기기를 누르면 큰 스크린샷과 설명을 넓게 띄우는 팝업이 후보.
+- **설명 글 줄이기** — description이 대부분 5~6문장 문단이라 팝업에서 길다. 하나씩 줄이는 중.
 - **배포** — GitHub 저장소 연결 후 Vercel이 가장 간단하다.
 - **개인 프로젝트 추가** — `category: 'personal'`, `showcase: true`, `platform`, 스크린샷을 넣으면 Works 첫 줄에 들어간다.

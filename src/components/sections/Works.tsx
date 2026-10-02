@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Section } from '@/components/ui/Section'
 import { DeviceStage } from '@/components/works/DeviceStage'
+import { ProjectLinks, StackList } from '@/components/works/ProjectMeta'
+import { WorkDialog } from '@/components/works/WorkDialog'
 import { useInView } from '@/hooks/useInView'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { PLATFORM_LABEL, categoryLabel, showcaseProjects } from '@/lib/projects'
@@ -12,11 +14,12 @@ interface WorkCardProps {
   visible: boolean
   /** 등장 순서를 만드는 지연(ms) */
   delay: number
+  onOpen: (project: Project) => void
 }
 
-/* 설명(description)은 싣지 않는다. 3열 카드는 폭이 좁아 긴 글을 넣으면
-   한 줄에 열 글자 남짓씩 세로로 끝없이 늘어나 전시대가 글에 묻힌다. */
-function WorkCard({ project, visible, delay }: WorkCardProps) {
+/* 설명(description)은 카드에 싣지 않고 팝업(WorkDialog)으로 보낸다. 3열 카드는 폭이 좁아
+   긴 글을 넣으면 한 줄에 열 글자 남짓씩 세로로 끝없이 늘어나 전시대가 글에 묻힌다. */
+function WorkCard({ project, visible, delay, onOpen }: WorkCardProps) {
   const platform = project.platform ?? 'pc'
 
   return (
@@ -24,8 +27,13 @@ function WorkCard({ project, visible, delay }: WorkCardProps) {
       className={`works-item group ${visible ? 'card-in' : 'card-hidden'}`}
       style={revealDelay(delay)}
     >
-      {/* 전시대 — 위에서 조명이 떨어지는 받침 위에 기기를 세운다 */}
-      <div className="works-plinth relative rounded-2xl border border-line px-[12%] pt-[13%] pb-[7%] transition-colors duration-300 group-hover:border-accent/50">
+      {/* 전시대 — 위에서 조명이 떨어지는 받침 위에 기기를 세운다. 누르면 자세히 보기가 열린다. */}
+      <button
+        type="button"
+        onClick={() => onOpen(project)}
+        aria-label={`${project.title} 자세히 보기`}
+        className="works-plinth relative block w-full rounded-2xl border border-line px-[12%] pt-[13%] pb-[7%] transition-colors duration-300 group-hover:border-accent/50"
+      >
         {/* 틀 모양만으로는 반응형인지 바로 읽히지 않을 수 있어 글자로도 적는다 */}
         <span className="absolute top-3 left-3 rounded-full bg-ink/60 px-2 py-0.5 text-[0.65rem] font-medium tracking-[0.12em] text-muted ring-1 ring-line">
           {PLATFORM_LABEL[platform]}
@@ -37,7 +45,7 @@ function WorkCard({ project, visible, delay }: WorkCardProps) {
             thumbnailMobile={project.thumbnailMobile}
           />
         </div>
-      </div>
+      </button>
 
       <div className="mt-5">
         <p className="flex flex-wrap items-center gap-2 text-xs tracking-wide text-muted">
@@ -52,44 +60,18 @@ function WorkCard({ project, visible, delay }: WorkCardProps) {
 
         <p className="mt-1.5 text-sm leading-relaxed text-accent">{project.summary}</p>
 
-        <ul className="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-xs tracking-wide text-muted/85">
-          {project.stack.map((tech) => (
-            <li
-              key={tech}
-              className="after:ml-2 after:text-line after:content-['·'] last:after:content-none"
-            >
-              {tech}
-            </li>
-          ))}
-        </ul>
+        <StackList stack={project.stack} className="mt-3" />
 
         <div className="mt-4 flex flex-wrap items-center gap-4 text-sm font-medium">
-          {project.demoUrl && (
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-accent hover:underline"
-            >
-              사이트 보기 →
-            </a>
-          )}
-          {project.repoUrl && (
-            <a
-              href={project.repoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted transition-colors hover:text-fg hover:underline"
-            >
-              GitHub →
-            </a>
-          )}
-          {/* 링크를 걸 수 없는 이유를 밝혀 둔다. 빈 자리로 두면 왜 없는지 알 수 없다. */}
-          {project.linkNote && !project.demoUrl && (
-            <span className="rounded-full bg-fg/8 px-2.5 py-1 text-[0.7rem] font-normal text-fg/75 ring-1 ring-fg/10">
-              {project.linkNote}
-            </span>
-          )}
+          <ProjectLinks project={project} />
+          {/* 전시대를 눌러도 열리지만, 기기 그림만 보고는 눌린다는 걸 알기 어렵다 */}
+          <button
+            type="button"
+            onClick={() => onOpen(project)}
+            className="ml-auto text-xs font-normal text-muted transition-colors hover:text-fg"
+          >
+            자세히 보기
+          </button>
         </div>
       </div>
     </article>
@@ -121,6 +103,8 @@ export function Works() {
     () => [showcaseProjects.slice(0, headCount), showcaseProjects.slice(headCount)],
     [headCount],
   )
+
+  const [selected, setSelected] = useState<Project | null>(null)
 
   const [open, setOpen] = useState(false)
   /* 다 열린 뒤에만 잘라내기를 푼다. 열리는 중에 풀면 아직 펼쳐지지 않은 카드가 비어져 나온다. */
@@ -173,6 +157,7 @@ export function Works() {
               project={project}
               visible={inView}
               delay={index * STAGGER_MS}
+              onOpen={setSelected}
             />
           ))}
         </div>
@@ -200,6 +185,7 @@ export function Works() {
                           ? (head.length + index) * STAGGER_MS
                           : (index - columns + 1) * STAGGER_MS
                       }
+                      onOpen={setSelected}
                     />
                   )
                 })}
@@ -248,6 +234,8 @@ export function Works() {
           </>
         )}
       </div>
+
+      <WorkDialog project={selected} onClose={() => setSelected(null)} />
     </Section>
   )
 }
