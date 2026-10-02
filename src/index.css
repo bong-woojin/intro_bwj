@@ -97,6 +97,42 @@
 }
 
 /* ---------------------------------------------------------------
+   Works 전시대 — 위에서 조명이 떨어지는 받침 위에 기기를 세운다
+   --------------------------------------------------------------- */
+
+.works-plinth {
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgb(167 139 250 / 0.12), transparent 70%),
+    linear-gradient(to bottom, rgb(19 19 25 / 0.2), rgb(19 19 25 / 0.9));
+}
+
+/* 올려 두면 기기가 살짝 뒤로 젖혀지며 들린다 */
+.works-tilt {
+  transform-origin: 50% 100%;
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.works-item:hover .works-tilt {
+  transform: perspective(900px) rotateX(6deg) translateY(-6px);
+}
+
+/* 서랍 — 시간은 Works.tsx의 DRAWER_MS와 짝을 이룬다 */
+.works-drawer {
+  transition: height 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .works-tilt,
+  .works-drawer {
+    transition: none;
+  }
+
+  .works-item:hover .works-tilt {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------
    첫 화면 오른쪽 — 세 원이 겹쳐 도는 그림
 
    퍼블리셔 · 프론트엔드 · AI를 각각 원 하나로 두고 서로 겹쳐 놓는다.

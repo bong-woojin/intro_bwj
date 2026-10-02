@@ -27,18 +27,23 @@ React 19 · TypeScript · Vite 8 · Tailwind CSS v4
 src/
 ├─ data/profile.ts        ← 페이지의 모든 내용
 ├─ types/index.ts         ← 내용의 형태
+├─ assets/works/          ← Works 스크린샷 원본 (한 장씩)
 ├─ lib/
 │  ├─ stages.ts           세 축(Publisher · Frontend · AI)의 이름과 색
-│  └─ reveal.ts           등장 지연값 헬퍼
+│  ├─ reveal.ts           등장 지연값 헬퍼
+│  ├─ projects.ts         Works / Experience에 들어갈 목록, 분류·대응 화면 라벨
+│  └─ screenshots.ts      스크린샷 이름 → 크기별 webp(srcset)
 ├─ hooks/
 │  ├─ useInView.ts        화면 진입 감지
-│  └─ useActiveSection.ts 현재 섹션 표시
+│  ├─ useActiveSection.ts 현재 섹션 표시
+│  └─ useMediaQuery.ts    미디어쿼리 일치 여부 (Strengths 배치, Works 서랍의 열 수)
 ├─ components/
 │  ├─ intro/              첫 진입 인트로 (두 연출 + 껍데기 + 별하늘)
 │  ├─ hero/StageOrbit.tsx 첫 화면 오른쪽 세 원 그림
+│  ├─ works/DeviceStage   Works 전시대의 모니터·폰 틀
 │  ├─ layout/             Header(로고 + 내비), Footer, BrandMark
-│  ├─ sections/           Hero, Strengths, Skills, Projects, Contact
-│  └─ ui/                 Section(섹션 공통 껍데기), ScrollCue
+│  ├─ sections/           Hero, Strengths, Skills, Works, Experience, Contact
+│  └─ ui/                 Section(섹션 공통 껍데기), Disclosure(자세히 펼침), ScrollCue
 └─ index.css              테마 토큰 + 모든 애니메이션
 ```
 
@@ -47,6 +52,26 @@ src/
 **`src/data/profile.ts` 하나만 고친다.** 이름, 소개 글, 인트로 문구, 강점, 기술, 프로젝트, 연락처가 모두 여기 있다. 화면 코드에는 문구를 직접 넣지 않는다.
 
 `index.html`의 `<title>`과 `description`은 별도로 관리하므로 이름이 바뀌면 함께 고친다.
+
+### 스크린샷을 넣을 때
+
+1. 캡처를 `src/assets/works/`에 `{작업}-pc.png` / `{작업}-mo.png`로 넣는다.
+2. `profile.ts`의 해당 프로젝트에 **확장자 없이 이름만** 적는다.
+
+```ts
+platform: 'both',
+thumbnail: 'mksignal-pc',        // 모니터
+thumbnailMobile: 'mksignal-mo',  // 앞에 겹친 폰
+```
+
+크기별 webp는 `vite-imagetools`가 dev·build 때 만든다. 손으로 변환하지 않는다. 이름 끝이 `-pc`면 320~960, `-mo`면 120~400 폭으로 만들어진다. 이름이 틀리면 dev에서 바로 오류가 난다.
+
+| | 캡처 크기 | 이유 |
+| --- | --- | --- |
+| PC | 1920 폭 모니터에서 브라우저 화면 영역 그대로 (약 1.92:1) | 모니터 틀이 16:9 화면 위에 탭 바를 얹은 모양이라, 탭 바를 뺀 나머지가 이 비율이다 |
+| MO | DevTools 기기 모드 `390 × 806` | 폰 틀 비율 9:18.6 |
+
+세로 전체 캡처는 쓰지 않는다. 위쪽 기준으로 잘려서 첫 화면만 남는다. `captures/`는 지금 쓰지 않는 원본을 보관하는 곳이고 git에서 빠져 있다.
 
 ---
 
@@ -119,7 +144,24 @@ inline `transition-delay`를 쓰면 **hover 같은 다른 전환까지 함께 �
 
 `.reveal`은 transition이라 요소가 다시 마운트돼도 재생되지 않는다. 부모에 이미 `is-visible`이 있으면 새 요소는 처음부터 보이는 상태로 나타난다.
 
-Projects의 탭 전환처럼 다시 재생돼야 하는 곳은 `.card-in`처럼 animation을 쓰고 `key`를 바꿔 다시 마운트한다.
+Works 서랍처럼 나중에 다시 재생돼야 하는 곳은 `.card-in`처럼 animation을 쓰고, 클래스를 바꾸거나 `key`를 바꿔 다시 마운트한다.
+
+### 높이가 바뀌는 영역은 0fr → 1fr, 또는 재서 넘긴다
+
+`height: auto`에는 전환이 걸리지 않는다.
+
+- **0에서 펼칠 때** — `ui/Disclosure`처럼 grid 행을 `0fr`에서 `1fr`로 움직인다. 내용 높이를 몰라도 된다.
+- **0이 아닌 높이에서 펼칠 때** — Works 서랍은 닫혀서도 다음 줄을 128px 비쳐 보여야 해서 `0fr`을 못 쓴다. `ResizeObserver`로 안쪽 높이를 재서 px로 넘긴다.
+
+잘라내기(`overflow: hidden`)는 다 열린 뒤에 푼다. 열리는 중에 풀면 아직 펼쳐지지 않은 카드가 비어져 나온다. 닫혀 비치는 카드는 `inert`로 포커스를 막는다.
+
+### 작은 칸의 이미지는 미리 줄여서 srcset으로
+
+기기 속 화면은 폭 45~250px밖에 안 된다. 큰 이미지 한 장을 넣으면 브라우저가 3~5배 줄이면서 **주변 몇 픽셀만 보고 색을 정해** 글자와 경계가 계단처럼 깨진다. 형식(PNG·WebP)과는 상관없다.
+
+크기별로 미리 고품질 축소(Lanczos)해 두고 `srcset` + `sizes`로 표시 크기에 가장 가까운 것을 고르게 한다. `sizes`는 `DeviceStage.tsx`의 `sizesOf()`가 받침 칸 폭 대비 비율로 계산하므로, Works 격자의 열 수나 여백을 바꾸면 이 값도 맞춘다.
+
+선명하게 다듬기(sharpen)는 넣지 않는다. 날카로워진 경계가 축소될 때 더 깨진다.
 
 ### 관찰자는 묶음마다 하나만
 
@@ -153,7 +195,7 @@ Projects의 탭 전환처럼 다시 재생돼야 하는 곳은 `.card-in`처럼 
 
 ### 소개 글에는 수치를 넣지 않는다
 
-첫 화면 소개는 태도만 담백하게 담는다. 숫자는 Strengths 카드의 근거와 Projects 카드로 옮겼다. 소개 글에 숫자가 박히면 읽는 흐름이 끊긴다.
+첫 화면 소개는 태도만 담백하게 담는다. 숫자는 Strengths 카드의 근거와 Works·Experience의 요약으로 옮겼다. 소개 글에 숫자가 박히면 읽는 흐름이 끊긴다.
 
 Strengths 카드는 **주장(제목) + 근거(구분선 아래 목록)** 구조를 지킨다. 주장만 있으면 자기 평가가 되고, 근거가 있어야 읽는 사람이 판단할 수 있다.
 
@@ -164,13 +206,34 @@ Strengths 카드는 **주장(제목) + 근거(구분선 아래 목록)** 구조�
 
 겹치면 스크롤만 길어진다.
 
-### Projects는 성격별로 나눈다
+### 결과물(Works)과 이력(Experience)을 나눈다
 
-기술 스택으로 나누면 jQuery에 10건이 몰려 필터의 의미가 없고, "React/Next 1건"으로 보여 최신 스택 경험이 얕아 보인다.
+화면을 보여줄 수 있는 결과물과, 리팩토링·사내 운영처럼 화면이 없는 일을 같은 카드로 나란히 두면 화면 없는 쪽이 빈약해 보인다. 화면 없는 일은 수치와 과정이 강점이라 그릇을 달리한다.
 
-`types/index.ts`의 `ProjectCategory`와 `data/profile.ts`의 `PROJECT_CATEGORIES`로 관리한다. **항목이 0개인 분류는 탭에서 자동으로 빠지므로**, 개인 프로젝트를 추가하면 그때 탭이 생긴다.
+| | 들어가는 것 | 정하는 값 |
+| --- | --- | --- |
+| **Works** | 화면을 보여줄 수 있는 결과물. 전시대 격자 | `showcase: true` |
+| **Experience** | 회사에서 한 일 전부. 타임라인 | `category`가 `'personal'`이 아닌 것 전부 |
 
-대표작은 탭이 아니라 `featured: true` 표시로 둔다. 탭으로 만들면 다른 탭과 중복되거나 한쪽에서 빠진다.
+한 프로젝트가 양쪽에 다 나올 수 있다. 데이터는 `profile.projects` 하나이고 `lib/projects.ts`가 갈라 준다. 회사 정보는 `profile.company`.
+
+- **Works 카드에는 설명(description)을 넣지 않는다.** 3열 카드는 폭이 좁아 긴 글이 세로로 끝없이 늘어나고 전시대가 글에 묻힌다. 넣어 봤다가 뺐다. 긴 설명은 Experience의 `자세히`에서 읽는다.
+- **Works는 첫 줄만 펼치고 나머지는 서랍에 넣는다.** 계속 추가될 목록이라서다. 최신순이라 새 작업이 첫 줄에 온다.
+- **Works에서 Experience로, Experience에서 Works로 건너가는 링크는 두지 않는다.** 읽던 자리를 잃는다. Experience에는 `사이트 보기 →`(외부 링크)만 단다.
+- **대표작(Main) 표시는 없앴다.** 8개 중 4개에 붙어 강조 효과가 없었다.
+- `ProjectCategory`(서비스 런칭 · 구조 개선 · 랜딩·홍보 · 개인)는 탭이 아니라 라벨로만 쓴다.
+
+### 기기 틀은 대응 화면을 나타낸다
+
+`platform` 하나로 틀과 태그가 함께 정해진다.
+
+| `platform` | 틀 | 태그 |
+| --- | --- | --- |
+| `pc` | 모니터 | `PC` |
+| `mo` | 폰 | `MO` |
+| `both` | 모니터 앞에 작은 폰을 겹쳐 세움 | `PC · MO` |
+
+`both`는 화면 폭에 따라 레이아웃이 바뀌는 **반응형**일 때만 쓴다. PC에서도 모바일 화면을 가운데 띄우는 웹앱(AI시그널프로)은 `mo`다.
 
 ### 링크가 없으면 이유를 적는다
 
@@ -225,7 +288,7 @@ npm run dev
 
 ## 남은 작업
 
-- **연락처** — GitHub 주소가 `data/profile.ts`에 주석으로 남아 있다. 실제 주소를 넣어야 한다. 이메일이 회사 주소이므로 이직용이면 개인 메일로 교체한다.
-- **프로젝트 링크** — 살아 있는 서비스의 실제 URL을 `demoUrl`에 넣는다.
-- **배포** — 아직 안 했다. GitHub 저장소 연결 후 Vercel이 가장 간단하다.
-- **개인 프로젝트** — `category: 'personal'`로 추가하면 탭이 자동으로 생긴다.
+- **AI시그널프로 SEO 페이지** — 스크린샷과 `demoUrl`이 비어 있어 Works에서 흰 화면, 링크 없음으로 나온다.
+- **개인 프로젝트의 설명** — 숙소 예약·COINFLOW의 description은 Works에서 빠졌고 Experience에도 없어서 지금 어디에도 보이지 않는다. 기기를 누르면 큰 스크린샷과 설명을 넓게 띄우는 팝업이 후보.
+- **배포** — GitHub 저장소 연결 후 Vercel이 가장 간단하다.
+- **개인 프로젝트 추가** — `category: 'personal'`, `showcase: true`, `platform`, 스크린샷을 넣으면 Works 첫 줄에 들어간다.

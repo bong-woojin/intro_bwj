@@ -86,10 +86,10 @@ export function Hero({ heroReady }: HeroProps) {
 
           <div className="reveal mt-9 flex flex-wrap gap-3 lg:mt-8" style={delay(introEnd + 60)}>
             <a
-              href="#projects"
+              href="#works"
               className="rounded-full bg-accent-strong px-5 py-2.5 text-sm font-medium text-white transition duration-200 hover:opacity-85 active:scale-[0.97]"
             >
-              프로젝트 보기
+              작업물 보기
             </a>
             <a
               href="#contact"

@@ -5,11 +5,12 @@ export const SECTIONS: SectionId[] = [
   { id: 'about', label: 'About', href: '#top' },
   { id: 'strengths', label: 'Strengths' },
   { id: 'skills', label: 'Skills' },
-  { id: 'projects', label: 'Projects' },
+  { id: 'works', label: 'Works' },
+  { id: 'experience', label: 'Experience' },
   { id: 'contact', label: 'Contact' },
 ]
 
-/** Projects 탭에 쓰이는 이름. 항목이 하나도 없는 분류는 탭에서 자동으로 빠집니다. */
+/** 프로젝트 성격을 부르는 이름. Works 카드와 Experience 목록에 라벨로 붙습니다. */
 export const PROJECT_CATEGORIES: { id: ProjectCategory; label: string }[] = [
   { id: 'launch', label: '서비스 런칭' },
   { id: 'improve', label: '구조 개선' },
@@ -20,6 +21,7 @@ export const PROJECT_CATEGORIES: { id: ProjectCategory; label: string }[] = [
 /**
  * 이 파일의 내용만 바꾸면 페이지 전체가 갱신됩니다.
  * 프로젝트는 최신순으로 정렬합니다.
+ * showcase: true인 항목은 Works에 전시되고, 개인 프로젝트를 뺀 전부는 Experience에 오릅니다.
  */
 export const profile: Profile = {
   name: '봉우진',
@@ -87,36 +89,65 @@ export const profile: Profile = {
     { category: 'SEO & 표준', items: ['시맨틱 마크업', '웹접근성', 'JSON-LD', 'GA4 / GTM'] },
     { category: 'Tooling', items: ['Git', 'PM2', 'Nginx', 'W3C Validator'] },
   ],
+  /* Experience 머리에 붙는 회사 정보. 개인 프로젝트를 뺀 나머지가 이 회사의 이력으로 묶인다. */
+  company: {
+    name: '(주)이머니',
+    period: '2023.07 – 현재',
+  },
   projects: [
-    /* ── 개인 프로젝트를 넣는 자리 ─────────────────────────────────
-       아래 주석을 풀고 내용을 채우면 '개인 프로젝트' 탭이 저절로 생깁니다.
-       항목이 하나도 없는 분류는 탭에 나타나지 않습니다.
-
-       프로젝트는 최신순으로 정렬하므로, 기간에 맞는 자리에 옮겨 두세요.
-
     {
-      id: 'my-project',                  // 영문 소문자, 다른 항목과 겹치지 않게
-      title: '프로젝트 이름',
-      period: '2026.09',                 // '2026.09' 또는 '2026.01 – 2026.03', 진행 중이면 '2026.09 – 현재'
-      category: 'personal',              // 이 줄이 개인 프로젝트 탭을 만듭니다
-      featured: true,                    // 대표작으로 표시 (필요 없으면 줄째 지우기)
-      summary: '한 줄 요약. 무엇을 만들었는지 한 문장으로.',
+      id: 'airbnb-clone',
+      title: '숙소 예약 서비스 — 검색·필터링 구현',
+      period: '2026.06 – 2026.07, 2026.09',
+      category: 'personal',
+      showcase: true,
+      platform: 'both',
+      thumbnail: 'airbnb-pc',
+      thumbnailMobile: 'airbnb-mo',
+      summary: '숙소 검색부터 예약 요청까지의 흐름을 Next.js App Router로 구현',
       description:
-        '어떤 문제를 왜 그렇게 풀었는지 적습니다. 혼자 만든 것이라면 어떤 판단을 했는지가 회사 프로젝트보다 더 잘 드러납니다.',
-      stack: ['React 19', 'TypeScript', 'Vite'],
-      demoUrl: 'https://example.com',    // 배포 주소 (없으면 줄째 지우기)
-      repoUrl: 'https://github.com/bong-woojin/example',  // 저장소 (없으면 줄째 지우기)
-      // demoUrl과 repoUrl을 둘 다 지웠다면 아래로 이유를 밝힐 수 있습니다
-      // linkNote: '개발 중',
+        '검색 조건을 전역 상태가 아니라 URL에 두고, 목록 페이지(서버 컴포넌트)가 searchParams를 읽어 필터링하도록 설계했습니다. 새로고침·뒤로가기·링크 공유가 그대로 재현되고, 검색 상태를 위한 스토어가 따로 필요 없어집니다. 필터·페이지네이션은 순수 함수로 분리해 서버 컴포넌트와 Route Handler가 함께 쓰도록 했고, 목록은 첫 페이지를 서버가 렌더하고 이후를 클라이언트가 이어 붙이는 하이브리드 구조로 만들었습니다. 확장 검색바와 압축 바는 실제로는 별개의 DOM이라 FLIP으로 위치·크기를 보간해 하나처럼 변형되게 했고, 스크롤 전환에는 히스테리시스를 둬 경계에서 떨리지 않게 했습니다. 예약은 Route Handler로 API를 만들어 요청 중·성공·실패 상태 전이를 처리했고, 검증 로직은 순수 함수로 분리해 Vitest로 검증했습니다.',
+      stack: [
+        'Next.js 16',
+        'React 19',
+        'TypeScript',
+        'Redux Toolkit',
+        'CSS Modules',
+        'Vitest',
+      ],
+      demoUrl: 'https://airbnb-bwj.vercel.app',
+      repoUrl: 'https://github.com/bong-woojin/airbnb-clone',
     },
-
-       ──────────────────────────────────────────────────────────── */
+    {
+      id: 'coinflow',
+      title: 'COINFLOW — 암호화폐 실시간 시세',
+      period: '2026.09 – 2026.10',
+      category: 'personal',
+      showcase: true,
+      platform: 'pc',
+      thumbnail: 'coinflow-pc',
+      summary: '업비트 원화마켓 전 종목의 실시간 시세를 다루는 데스크톱 대시보드',
+      description:
+        '초당 수십 건씩 들어오는 시세를 289개 행이 버티게 만드는 것이 과제였습니다. 소켓 수신은 버퍼에만 쌓고 200ms마다 한 번 반영하도록 배칭했고, 각 행이 전체가 아닌 자기 종목만 구독하게 바꿔 실제로 값이 바뀐 행만 다시 그리도록 했습니다. React DevTools Profiler로 전후를 측정해 10초간 커밋 260회 → 53회, 최대 렌더 151.4ms → 7.3ms로 줄였고(각 79.6%·95.2% 감소), 효과가 없었던 시도도 기록으로 남겼습니다. 업비트가 Origin당 소켓을 하나만 허용한다는 제약은 로컬에서 드러나지 않아 배포 후에 발견했고, 소켓을 모듈 싱글턴으로 두고 구독을 병합하는 구조로 해결했습니다.',
+      stack: [
+        'React 19',
+        'TypeScript',
+        'Vite 8',
+        'Zustand',
+        'CSS Modules',
+        'lightweight-charts',
+        'Vercel',
+      ],
+      demoUrl: 'https://coinflow-bwj.vercel.app',
+      repoUrl: 'https://github.com/bong-woojin/coinflow-bwj',
+    },
     {
       id: 'ai-signal-pro-seo',
       title: 'AI시그널프로 SEO 전용 페이지',
       period: '2026.03 – 2026.04',
       category: 'landing',
-      featured: true,
+      showcase: true,
+      platform: 'both',
       summary: '검색 유입을 위한 랜딩·리포트 페이지를 환경 구성부터 배포까지 단독 구축',
       description:
         'SSR과 SWR fallback을 결합해 크롤러에는 완성된 HTML을, 사용자에게는 재요청 없는 초기 렌더를 제공했습니다. 종목별 동적 메타태그와 JSON-LD 5종, 동적 sitemap, AI 크롤러 허용 및 llms.txt까지 SEO·AEO·GEO를 전담했고, 동적 라우팅으로 국내 전 종목 리포트를 템플릿 하나로 자동 생성해 종목명 검색 유입 채널을 확보했습니다. Vue·Nuxt 경험을 바탕으로 React·Next.js를 신규 도입한 프로젝트입니다.',
@@ -136,7 +167,10 @@ export const profile: Profile = {
       title: 'AI시그널프로 — 주식 종목추천 서비스',
       period: '2025.01 – 현재',
       category: 'launch',
-      featured: true,
+      showcase: true,
+      /* 웹앱이라 PC에서도 모바일 화면을 가운데 띄운다. 반응형이 아니므로 mo로 둔다. */
+      platform: 'mo',
+      thumbnail: 'aisignal-mo',
       summary: '모바일 웹·앱 웹뷰 전 화면의 퍼블리싱과 UI 개발 단독 담당',
       description:
         '메인·종목분석·매매시그널·관심종목·결제·멤버십·마이페이지 등 전 영역을 구현하고 신규 기능은 화면 제작부터 API 연동까지 처리했습니다. 반복되는 UI를 공통 컴포넌트(다이얼로그·바텀시트·툴팁·상단바·하단 내비)로 분리해 이후 화면은 조합만으로 제작할 수 있게 정리했고, 차트 UI 12종을 구현했습니다. 미국주식을 추가하면서 국가 상태를 Pinia로 중앙화해 토글 하나로 국내·미국이 함께 대응되는 구조를 만들었고, 덕분에 미국 매매시그널 화면은 기존 마크업 재사용만으로 구축했습니다.',
@@ -150,16 +184,22 @@ export const profile: Profile = {
         'amCharts 5',
         'SortableJS',
       ],
+      demoUrl: 'https://www.aisignalpro.co.kr/'
     },
     {
       id: 'em-homepage',
       title: 'eM 회사 홈페이지 전면 개편',
       period: '2025.06 – 2025.07',
       category: 'landing',
+      showcase: true,
+      platform: 'both',
+      thumbnail: 'emoney-pc',
+      thumbnailMobile: 'emoney-mo',
       summary: '메인·회사소개·비즈니스와 공통 영역 전량을 단독 담당해 일정 내 오픈',
       description:
         '흩어져 있던 5개 페이지를 탭·스크롤 연동 구조의 3개로 통합해 페이지 이동 없이 전체 콘텐츠를 탐색하도록 개선했습니다. 3개 파일에 중복되던 헤더·GNB·푸터를 Thymeleaf fragment로 컴포넌트화해 1개 파일 관리 체계로 전환, 오픈 후 반복된 로고·문구 변경 대응 공수를 3분의 1로 줄였습니다. 4단 브레이크포인트(1200~605px)로 레이아웃을 분기하고 히어로 배경 영상을 PC·모바일용으로 나눠 모바일 불필요 로딩을 제거했습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Swiper', 'Thymeleaf', 'Kakao Map', 'GTM'],
+      demoUrl: 'https://emoney.co.kr/'
     },
     {
       id: 'condition-signal',
@@ -167,7 +207,9 @@ export const profile: Profile = {
       period: '2024.10 – 현재',
       linkNote: '증권사 앱 내장',
       category: 'launch',
-      featured: true,
+      showcase: true,
+      platform: 'mo',
+      thumbnail: 'cssignal-mo',
       summary: '증권사 앱 웹뷰 내장 서비스의 마크업 전량을 단독 담당',
       description:
         '본문 6개와 공통·에러 3개를 합쳐 9개 화면, 탭·팝업·바텀시트를 포함한 세부 뷰 15개를 일정 내 완료해 정상 오픈에 기여했습니다. 리셋 CSS와 Pretendard 가변폰트 자체 호스팅, 등락 컬러 규칙을 단일 정의로 통합해 퍼블리싱 소요를 30% 줄이고 320~768px 전 구간에서 동일한 렌더링을 확보했습니다.',
@@ -200,10 +242,15 @@ export const profile: Profile = {
       title: 'MK시그널 홍보용 반응형 랜딩페이지',
       period: '2024.08 – 2024.09',
       category: 'landing',
+      showcase: true,
+      platform: 'both',
+      thumbnail: 'mksignal-pc',
+      thumbnailMobile: 'mksignal-mo',
       summary: '시안 반영부터 배포·GA 등록까지 단독 제작',
       description:
         '미디어쿼리 기반 반응형으로 구현해 PC·모바일 2벌 운영 없이 단일 소스로 전 기기에 대응했고, 유지보수 대상 파일을 절반으로 줄였습니다. 서비스 소개·핵심 기능·이용 안내를 섹션 단위로 구성하고 스크롤 위치와 무관하게 가입 CTA를 상시 노출해 유입에서 전환까지의 동선을 단축했습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Google Analytics (GA4)'],
+      demoUrl: 'https://mksignal.com/mk'
     },
     {
       id: 'robostock-partners',
@@ -228,21 +275,15 @@ export const profile: Profile = {
       stack: ['HTML5', 'CSS3', 'jQuery', 'JSP (include)', 'Thymeleaf'],
     },
     {
-      id: 'x1-trial',
-      title: 'X1 3일 무료체험 신청 페이지 신규 구축',
-      period: '2023.08 – 2023.09',
-      category: 'launch',
-      summary: 'PC·모바일 신청 페이지를 단독 퍼블리싱해 양 디바이스 동시 오픈',
-      description:
-        'Swiper 기반 전문가 슬라이더와 하단 슬라이드업 모달을 구현했습니다. 로그인 여부에 따라 입력 단계를 분기해 기존 회원의 입력 항목을 6개에서 2개로 줄여 신청 이탈 요인을 최소화했고, 고정값에 의존하던 구조를 개선해 전문가가 추가돼도 레이아웃이 깨지지 않도록 바꿔 운영자가 코드 수정 요청 없이 전문가를 상시 교체할 수 있게 했습니다.',
-      stack: ['HTML5', 'CSS3', 'JavaScript (ES6)', 'jQuery', 'Swiper 10', 'Ajax', 'JSP'],
-    },
-    {
       id: 'aigo-stock',
       title: 'AIGO스탁 런칭 — AI 종목추천 모바일 웹',
       period: '2023.07 – 2024.04',
       linkNote: '서비스 종료',
       category: 'launch',
+      /* 종료된 서비스라 캡처를 구하지 못하면 showcase를 지운다. Experience에는 그대로 남는다. */
+      showcase: true,
+      platform: 'mo',
+      thumbnail: 'aigostock-mo',
       summary: '22개 화면의 프론트엔드 마크업을 1인 단독 담당해 정상 오픈',
       description:
         '메인·종목 상세분석·급등주·HOT섹터·리포트·포트폴리오·정기결제 해지 등 본문 16개와 공통 6개, 총 22개 화면을 단독으로 맡아 일정 내 완료했습니다. 1rem을 10px로 두는 반응형 체계와 px→rem 환산 규칙을 세워 320~768px 전 구간에서 동일한 비율로 렌더링되도록 하고, 화면당 퍼블리싱 소요 시간을 30% 줄였습니다.',

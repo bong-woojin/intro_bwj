@@ -3,10 +3,11 @@ import { IntroOverlay } from '@/components/intro/IntroOverlay'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { Contact } from '@/components/sections/Contact'
+import { Experience } from '@/components/sections/Experience'
 import { Hero } from '@/components/sections/Hero'
-import { Projects } from '@/components/sections/Projects'
 import { Skills } from '@/components/sections/Skills'
 import { Strengths } from '@/components/sections/Strengths'
+import { Works } from '@/components/sections/Works'
 
 /** true로 바꾸면 인트로를 탭당 한 번만 보여준다 */
 const SHOW_ONCE_PER_SESSION = false
@@ -66,7 +67,9 @@ function App() {
           <Hero heroReady={heroReady} />
           <Strengths />
           <Skills />
-          <Projects />
+          {/* 보여줄 수 있는 결과물을 먼저, 화면이 없는 일까지 담은 이력을 그 뒤에 둔다 */}
+          <Works />
+          <Experience />
           <Contact />
         </main>
         <Footer />

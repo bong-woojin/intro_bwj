@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 지금 쓰지 않는 스크린샷 원본 보관. 쓰는 원본은 src/assets/works에 둔다
+captures
