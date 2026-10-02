@@ -148,6 +148,8 @@ export const profile: Profile = {
       category: 'landing',
       showcase: true,
       platform: 'both',
+      thumbnail: 'aisignal-lp-pc',
+      thumbnailMobile: 'aisignal-lp-mo',
       summary: '검색 유입을 위한 랜딩·리포트 페이지를 환경 구성부터 배포까지 단독 구축',
       description:
         'SSR과 SWR fallback을 결합해 크롤러에는 완성된 HTML을, 사용자에게는 재요청 없는 초기 렌더를 제공했습니다. 종목별 동적 메타태그와 JSON-LD 5종, 동적 sitemap, AI 크롤러 허용 및 llms.txt까지 SEO·AEO·GEO를 전담했고, 동적 라우팅으로 국내 전 종목 리포트를 템플릿 하나로 자동 생성해 종목명 검색 유입 채널을 확보했습니다. Vue·Nuxt 경험을 바탕으로 React·Next.js를 신규 도입한 프로젝트입니다.',

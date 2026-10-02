@@ -55,7 +55,7 @@ src/
 
 ### 스크린샷을 넣을 때
 
-1. 캡처를 `src/assets/works/`에 `{작업}-pc.png` / `{작업}-mo.png`로 넣는다.
+1. 캡처를 `src/assets/works/`에 `{작업}-pc.png` / `{작업}-mo.png`로 넣는다. **구분은 하이픈(`-`)만.** `_pc`처럼 밑줄을 쓰면 크기별 변환 대상에서 빠진다.
 2. `profile.ts`의 해당 프로젝트에 **확장자 없이 이름만** 적는다.
 
 ```ts
@@ -289,7 +289,8 @@ npm run dev
 
 ## 남은 작업
 
-- **AI시그널프로 SEO 페이지** — 스크린샷과 `demoUrl`이 비어 있어 Works에서 흰 화면, 링크 없음으로 나온다.
+- **AI시그널프로 SEO 페이지** — `demoUrl`도 `linkNote`도 없어 Works·Experience의 링크 자리가 비어 있다.
+- **링크 공유 미리보기** — `index.html`에 `og:image`가 없어 메신저에 주소를 보내면 글자만 뜬다.
 - **설명 글 줄이기** — description이 대부분 5~6문장 문단이라 팝업에서 길다. 하나씩 줄이는 중.
 - **배포** — GitHub 저장소 연결 후 Vercel이 가장 간단하다.
 - **개인 프로젝트 추가** — `category: 'personal'`, `showcase: true`, `platform`, 스크린샷을 넣으면 Works 첫 줄에 들어간다.

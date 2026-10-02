@@ -53,7 +53,8 @@ function Screen({ thumbnail, ratio, stage, className = '' }: ScreenProps) {
         srcSet={shot.srcSet}
         sizes={sizesOf(ratio, stage)}
         alt=""
-        loading="lazy"
+        /* 팝업은 열리자마자 보여야 하고, 전환이 이 이미지를 기다린다 */
+        loading={stage === 'dialog' ? 'eager' : 'lazy'}
         decoding="async"
         className={`bg-white object-cover object-top ${className}`}
       />

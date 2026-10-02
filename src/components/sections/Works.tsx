@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { Section } from '@/components/ui/Section'
 import { DeviceStage } from '@/components/works/DeviceStage'
 import { ProjectLinks, StackList } from '@/components/works/ProjectMeta'
-import { WorkDialog } from '@/components/works/WorkDialog'
+import { WORK_DEVICE_TRANSITION, WorkDialog } from '@/components/works/WorkDialog'
 import { useInView } from '@/hooks/useInView'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { PLATFORM_LABEL, categoryLabel, showcaseProjects } from '@/lib/projects'
@@ -14,13 +15,16 @@ interface WorkCardProps {
   visible: boolean
   /** 등장 순서를 만드는 지연(ms) */
   delay: number
-  onOpen: (project: Project) => void
+  /** device — 팝업으로 이어 줄 이 카드의 기기 요소 */
+  onOpen: (project: Project, device: HTMLElement | null) => void
 }
 
 /* 설명(description)은 카드에 싣지 않고 팝업(WorkDialog)으로 보낸다. 3열 카드는 폭이 좁아
    긴 글을 넣으면 한 줄에 열 글자 남짓씩 세로로 끝없이 늘어나 전시대가 글에 묻힌다. */
 function WorkCard({ project, visible, delay, onOpen }: WorkCardProps) {
   const platform = project.platform ?? 'pc'
+  const deviceRef = useRef<HTMLDivElement>(null)
+  const open = () => onOpen(project, deviceRef.current)
 
   return (
     <article
@@ -30,7 +34,7 @@ function WorkCard({ project, visible, delay, onOpen }: WorkCardProps) {
       {/* 전시대 — 위에서 조명이 떨어지는 받침 위에 기기를 세운다. 누르면 자세히 보기가 열린다. */}
       <button
         type="button"
-        onClick={() => onOpen(project)}
+        onClick={open}
         aria-label={`${project.title} 자세히 보기`}
         className="works-plinth relative block w-full rounded-2xl border border-line px-[12%] pt-[13%] pb-[7%] transition-colors duration-300 group-hover:border-accent/50"
       >
@@ -38,7 +42,7 @@ function WorkCard({ project, visible, delay, onOpen }: WorkCardProps) {
         <span className="absolute top-3 left-3 rounded-full bg-ink/60 px-2 py-0.5 text-[0.65rem] font-medium tracking-[0.12em] text-muted ring-1 ring-line">
           {PLATFORM_LABEL[platform]}
         </span>
-        <div className="works-tilt">
+        <div ref={deviceRef} className="works-tilt">
           <DeviceStage
             platform={platform}
             thumbnail={project.thumbnail}
@@ -67,7 +71,7 @@ function WorkCard({ project, visible, delay, onOpen }: WorkCardProps) {
           {/* 전시대를 눌러도 열리지만, 기기 그림만 보고는 눌린다는 걸 알기 어렵다 */}
           <button
             type="button"
-            onClick={() => onOpen(project)}
+            onClick={open}
             className="ml-auto text-xs font-normal text-muted transition-colors hover:text-fg"
           >
             자세히 보기
@@ -105,6 +109,7 @@ export function Works() {
   )
 
   const [selected, setSelected] = useState<Project | null>(null)
+  const [morphed, setMorphed] = useState(false)
 
   const [open, setOpen] = useState(false)
   /* 다 열린 뒤에만 잘라내기를 푼다. 열리는 중에 풀면 아직 펼쳐지지 않은 카드가 비어져 나온다. */
@@ -147,6 +152,60 @@ export function Works() {
     }
   }
 
+  /*
+   * 카드의 기기가 그대로 커지며 팝업 자리로 옮겨 가는 전환.
+   * 누른 카드의 기기와 팝업의 기기에 같은 view-transition-name을 붙이면 브라우저가 둘을
+   * 같은 물체로 보고 위치·크기를 이어 준다. 이름은 한 화면에 하나만 있어야 하므로
+   * 카드 쪽에는 전환하는 순간에만 붙인다. 지원하지 않는 브라우저는 그냥 열린다.
+   */
+  const origin = useRef<HTMLElement | null>(null)
+  const canTransition = () => 'startViewTransition' in document && !reducedMotion
+
+  /* 팝업은 카드보다 큰 이미지를 쓴다. 받기 전에 새 화면을 찍으면 흰 화면으로 날아갔다가
+     다 받은 뒤 그림이 툭 바뀐다. 전환은 이 약속이 끝날 때까지 옛 화면에 머문다.
+     너무 오래 멈춰 있지 않게 0.4초에서 끊는다. */
+  const screenshotsReady = () => {
+    const images = [...document.querySelectorAll<HTMLImageElement>('.work-dialog img')]
+    const decoded = Promise.all(images.map((image) => image.decode().catch(() => {})))
+    const timeout = new Promise((resolve) => window.setTimeout(resolve, 400))
+    return Promise.race([decoded, timeout])
+  }
+
+  const openWork = (project: Project, device: HTMLElement | null) => {
+    origin.current = device
+    if (!device || !canTransition()) {
+      setMorphed(false)
+      setSelected(project)
+      return
+    }
+    device.style.viewTransitionName = WORK_DEVICE_TRANSITION
+    document.startViewTransition(async () => {
+      // 옛 화면을 찍은 뒤: 카드에서 이름을 떼고 팝업을 연다 (팝업 기기가 이름을 이어받는다)
+      device.style.viewTransitionName = ''
+      flushSync(() => {
+        setMorphed(true)
+        setSelected(project)
+      })
+      await screenshotsReady()
+    })
+  }
+
+  const closeWork = () => {
+    const device = origin.current
+    // 그사이 화면 폭이 바뀌어 카드가 다시 그려졌으면 돌아갈 자리가 없다
+    if (!device?.isConnected || !canTransition()) {
+      setSelected(null)
+      return
+    }
+    const transition = document.startViewTransition(() => {
+      flushSync(() => setSelected(null))
+      device.style.viewTransitionName = WORK_DEVICE_TRANSITION
+    })
+    transition.finished.finally(() => {
+      device.style.viewTransitionName = ''
+    })
+  }
+
   return (
     <Section id="works" title="Works" description="직접 만들고 배포한 결과물입니다.">
       <div ref={ref}>
@@ -157,7 +216,7 @@ export function Works() {
               project={project}
               visible={inView}
               delay={index * STAGGER_MS}
-              onOpen={setSelected}
+              onOpen={openWork}
             />
           ))}
         </div>
@@ -185,7 +244,7 @@ export function Works() {
                           ? (head.length + index) * STAGGER_MS
                           : (index - columns + 1) * STAGGER_MS
                       }
-                      onOpen={setSelected}
+                      onOpen={openWork}
                     />
                   )
                 })}
@@ -235,7 +294,7 @@ export function Works() {
         )}
       </div>
 
-      <WorkDialog project={selected} onClose={() => setSelected(null)} />
+      <WorkDialog project={selected} onClose={closeWork} morphed={morphed} />
     </Section>
   )
 }

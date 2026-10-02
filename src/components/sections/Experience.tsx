@@ -22,10 +22,11 @@ function ExperienceItem({ project, index, visible }: ExperienceItemProps) {
       style={revealDelay(index * 70)}
     >
       {/* 세로선 위의 점 — 회색 선 위에서 항목의 시작을 짚어 주도록 포인트 색으로 칠하고 은은하게 번지게 한다.
-          바깥 고리는 카드 바탕(반투명 surface 아래로 비치는 ink)과 같은 색이라 선이 점 뒤로 끊겨 지나가는 것처럼 보인다. */}
+          바깥 고리는 카드 바탕(반투명 surface 아래로 비치는 ink)과 같은 색이라 선이 점 뒤로 끊겨 지나가는 것처럼 보인다.
+          스크롤 연동을 지원하면 선이 지나갈 때 불이 켜진다 (index.css의 .exp-dot). */}
       <span
         aria-hidden="true"
-        className="absolute top-1.5 -left-[5px] size-2.5 rounded-full bg-accent shadow-[0_0_10px_rgb(167_139_250/0.6)] ring-4 ring-ink"
+        className="exp-dot absolute top-1.5 -left-[5px] size-2.5 rounded-full bg-accent shadow-[0_0_10px_rgb(167_139_250/0.6)] ring-4 ring-ink"
       />
 
       <p className="text-xs tracking-wide text-muted tabular-nums">{project.period}</p>
@@ -90,7 +91,7 @@ export function Experience() {
           <p className="text-sm text-muted tabular-nums">{company.period}</p>
         </div>
 
-        <ol className="mt-8 space-y-9 border-l border-line">
+        <ol className="exp-line relative mt-8 space-y-9 border-l border-line">
           {companyProjects.map((project, index) => (
             <ExperienceItem key={project.id} project={project} index={index} visible={inView} />
           ))}
