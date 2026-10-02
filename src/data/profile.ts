@@ -163,6 +163,7 @@ export const profile: Profile = {
         'PM2',
         'Nginx',
       ],
+      demoUrl: 'https://lp.aisignalpro.co.kr/',
     },
     {
       id: 'ai-signal',

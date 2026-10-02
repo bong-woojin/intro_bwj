@@ -289,7 +289,6 @@ npm run dev
 
 ## 남은 작업
 
-- **AI시그널프로 SEO 페이지** — `demoUrl`도 `linkNote`도 없어 Works·Experience의 링크 자리가 비어 있다.
 - **링크 공유 미리보기** — `index.html`에 `og:image`가 없어 메신저에 주소를 보내면 글자만 뜬다.
 - **설명 글 줄이기** — description이 대부분 5~6문장 문단이라 팝업에서 길다. 하나씩 줄이는 중.
 - **배포** — GitHub 저장소 연결 후 Vercel이 가장 간단하다.
