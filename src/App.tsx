@@ -67,7 +67,6 @@ function App() {
           <Hero heroReady={heroReady} />
           <Strengths />
           <Skills />
-          {/* 보여줄 수 있는 결과물을 먼저, 화면이 없는 일까지 담은 이력을 그 뒤에 둔다 */}
           <Works />
           <Experience />
           <Contact />

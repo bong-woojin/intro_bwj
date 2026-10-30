@@ -1,7 +1,6 @@
 import type { Profile, ProjectCategory, SectionId } from '@/types'
 
 export const SECTIONS: SectionId[] = [
-  /* 첫 화면 전체가 소개이므로 블록 중간이 아니라 맨 위로 보낸다 */
   { id: 'about', label: 'About', href: '#top' },
   { id: 'strengths', label: 'Strengths' },
   { id: 'skills', label: 'Skills' },
@@ -10,7 +9,6 @@ export const SECTIONS: SectionId[] = [
   { id: 'contact', label: 'Contact' },
 ]
 
-/** 프로젝트 성격을 부르는 이름. Works 카드와 Experience 목록에 라벨로 붙습니다. */
 export const PROJECT_CATEGORIES: { id: ProjectCategory; label: string }[] = [
   { id: 'launch', label: '서비스 런칭' },
   { id: 'improve', label: '구조 개선' },
@@ -18,11 +16,6 @@ export const PROJECT_CATEGORIES: { id: ProjectCategory; label: string }[] = [
   { id: 'personal', label: '개인 프로젝트' },
 ]
 
-/**
- * 이 파일의 내용만 바꾸면 페이지 전체가 갱신됩니다.
- * 프로젝트는 최신순으로 정렬합니다.
- * showcase: true인 항목은 Works에 전시되고, 개인 프로젝트를 뺀 전부는 Experience에 오릅니다.
- */
 export const profile: Profile = {
   name: '봉우진',
   role: 'Frontend Developer',
@@ -38,7 +31,7 @@ export const profile: Profile = {
     'Vue와 React 양쪽에서 화면 개발과 공통 컴포넌트 설계부터 배포까지 담당했습니다. 가장 신경 쓰는 건 나중에 고칠 곳을 줄이는 일입니다. 같은 UI가 두 번 나오면 공통으로 묶고, 조건이 늘어날 걸 예상해 구조를 열어둡니다.',
     '마크업 구조와 접근성, 검색 노출, 로딩 속도까지 눈에 보이지 않는 부분도 화면의 품질이라고 봅니다. AI도 개발 과정에 적극적으로 쓰며, 반복되는 작업은 도구로 만들어 덜어냅니다.',
   ],
-  /* 헤더 로고와 첫 화면 그림의 세 축(Publisher · Frontend · AI)과 순서를 맞춘다 */
+
   strengths: [
     {
       visual: 'quality',
@@ -89,7 +82,7 @@ export const profile: Profile = {
     { category: 'SEO & 표준', items: ['시맨틱 마크업', '웹접근성', 'JSON-LD', 'GA4 / GTM'] },
     { category: 'Tooling', items: ['Git', 'PM2', 'Nginx', 'W3C Validator'] },
   ],
-  /* Experience 머리에 붙는 회사 정보. 개인 프로젝트를 뺀 나머지가 이 회사의 이력으로 묶인다. */
+
   company: {
     name: '(주)이머니',
     period: '2023.07 – 현재',
@@ -106,7 +99,7 @@ export const profile: Profile = {
       thumbnailMobile: 'airbnb-mo',
       summary: '숙소 검색부터 예약 요청까지의 흐름을 Next.js App Router로 구현',
       description:
-        '검색 조건을 전역 상태가 아니라 URL에 두고, 목록 페이지(서버 컴포넌트)가 searchParams를 읽어 필터링하도록 설계했습니다. 새로고침·뒤로가기·링크 공유가 그대로 재현되고, 검색 상태를 위한 스토어가 따로 필요 없어집니다. 필터·페이지네이션은 순수 함수로 분리해 서버 컴포넌트와 Route Handler가 함께 쓰도록 했고, 목록은 첫 페이지를 서버가 렌더하고 이후를 클라이언트가 이어 붙이는 하이브리드 구조로 만들었습니다. 확장 검색바와 압축 바는 실제로는 별개의 DOM이라 FLIP으로 위치·크기를 보간해 하나처럼 변형되게 했고, 스크롤 전환에는 히스테리시스를 둬 경계에서 떨리지 않게 했습니다. 예약은 Route Handler로 API를 만들어 요청 중·성공·실패 상태 전이를 처리했고, 검증 로직은 순수 함수로 분리해 Vitest로 검증했습니다.',
+        '검색 조건을 전역 상태 대신 URL에 두고 서버 컴포넌트가 searchParams로 필터링하게 해, 새로고침·뒤로가기·링크 공유가 그대로 재현되도록 했습니다. 실제로는 별개의 DOM인 확장·압축 검색바는 FLIP으로 위치와 크기를 보간해 하나처럼 변형되게 했습니다.',
       stack: [
         'Next.js 16',
         'React 19',
@@ -128,7 +121,7 @@ export const profile: Profile = {
       thumbnail: 'coinflow-pc',
       summary: '업비트 원화마켓 전 종목의 실시간 시세를 다루는 데스크톱 대시보드',
       description:
-        '초당 수십 건씩 들어오는 시세를 289개 행이 버티게 만드는 것이 과제였습니다. 소켓 수신은 버퍼에만 쌓고 200ms마다 한 번 반영하도록 배칭했고, 각 행이 전체가 아닌 자기 종목만 구독하게 바꿔 실제로 값이 바뀐 행만 다시 그리도록 했습니다. React DevTools Profiler로 전후를 측정해 10초간 커밋 260회 → 53회, 최대 렌더 151.4ms → 7.3ms로 줄였고(각 79.6%·95.2% 감소), 효과가 없었던 시도도 기록으로 남겼습니다. 업비트가 Origin당 소켓을 하나만 허용한다는 제약은 로컬에서 드러나지 않아 배포 후에 발견했고, 소켓을 모듈 싱글턴으로 두고 구독을 병합하는 구조로 해결했습니다.',
+        '초당 수십 건씩 들어오는 시세에도 289개 종목 표가 끊기지 않도록, 수신한 값을 200ms 단위로 모아 반영하고 값이 바뀐 행만 다시 그리게 했습니다. React DevTools Profiler로 전후를 측정해 렌더링 횟수를 80% 줄이고, 가장 오래 걸리던 렌더를 151ms에서 7ms로 단축했습니다.',
       stack: [
         'React 19',
         'TypeScript',
@@ -152,7 +145,7 @@ export const profile: Profile = {
       thumbnailMobile: 'aisignal-lp-mo',
       summary: '검색 유입을 위한 랜딩·리포트 페이지를 환경 구성부터 배포까지 단독 구축',
       description:
-        'SSR과 SWR fallback을 결합해 크롤러에는 완성된 HTML을, 사용자에게는 재요청 없는 초기 렌더를 제공했습니다. 종목별 동적 메타태그와 JSON-LD 5종, 동적 sitemap, AI 크롤러 허용 및 llms.txt까지 SEO·AEO·GEO를 전담했고, 동적 라우팅으로 국내 전 종목 리포트를 템플릿 하나로 자동 생성해 종목명 검색 유입 채널을 확보했습니다. Vue·Nuxt 경험을 바탕으로 React·Next.js를 신규 도입한 프로젝트입니다.',
+        '검색 유입이 목적인 페이지로 SEO·AEO·GEO를 전담했습니다. 서버에서 화면을 완성해 보내 검색엔진이 바로 읽게 하고, 국내 전 종목 리포트를 템플릿 하나로 자동 생성해 종목마다 제목·설명과 구조화 데이터, 사이트맵을 갖춰 종목명 검색 유입 경로를 만들었습니다. AI 답변과 생성형 검색에도 인용되도록 AI 크롤러를 허용하고 llms.txt를 설계했습니다.',
       stack: [
         'React 19',
         'Next.js 16',
@@ -171,12 +164,11 @@ export const profile: Profile = {
       period: '2025.01 – 현재',
       category: 'launch',
       showcase: true,
-      /* 웹앱이라 PC에서도 모바일 화면을 가운데 띄운다. 반응형이 아니므로 mo로 둔다. */
       platform: 'mo',
       thumbnail: 'aisignal-mo',
       summary: '모바일 웹·앱 웹뷰 전 화면의 퍼블리싱과 UI 개발 단독 담당',
       description:
-        '메인·종목분석·매매시그널·관심종목·결제·멤버십·마이페이지 등 전 영역을 구현하고 신규 기능은 화면 제작부터 API 연동까지 처리했습니다. 반복되는 UI를 공통 컴포넌트(다이얼로그·바텀시트·툴팁·상단바·하단 내비)로 분리해 이후 화면은 조합만으로 제작할 수 있게 정리했고, 차트 UI 12종을 구현했습니다. 미국주식을 추가하면서 국가 상태를 Pinia로 중앙화해 토글 하나로 국내·미국이 함께 대응되는 구조를 만들었고, 덕분에 미국 매매시그널 화면은 기존 마크업 재사용만으로 구축했습니다.',
+        '반복되는 UI를 다이얼로그·바텀시트 등 공통 컴포넌트로 분리해 이후 화면은 조합만으로 만들 수 있게 했고, Highcharts·amCharts로 차트 UI를 구현했습니다. 미국주식을 추가할 때는 국가 상태를 Pinia로 중앙화해 토글 하나로 국내·미국이 함께 바뀌게 했고, 미국 화면은 기존 마크업 재사용만으로 구축했습니다.',
       stack: [
         'Vue 3',
         'Nuxt 3',
@@ -200,7 +192,7 @@ export const profile: Profile = {
       thumbnailMobile: 'emoney-mo',
       summary: '메인·회사소개·비즈니스와 공통 영역 전량을 단독 담당해 일정 내 오픈',
       description:
-        '흩어져 있던 5개 페이지를 탭·스크롤 연동 구조의 3개로 통합해 페이지 이동 없이 전체 콘텐츠를 탐색하도록 개선했습니다. 3개 파일에 중복되던 헤더·GNB·푸터를 Thymeleaf fragment로 컴포넌트화해 1개 파일 관리 체계로 전환, 오픈 후 반복된 로고·문구 변경 대응 공수를 3분의 1로 줄였습니다. 4단 브레이크포인트(1200~605px)로 레이아웃을 분기하고 히어로 배경 영상을 PC·모바일용으로 나눠 모바일 불필요 로딩을 제거했습니다.',
+        '흩어져 있던 5개 페이지를 탭·스크롤 연동 구조의 3개로 통합해 페이지 이동 없이 전체를 탐색하게 했습니다. 3개 파일에 중복되던 헤더·GNB·푸터를 Thymeleaf fragment 하나로 묶어, 오픈 후 반복된 로고·문구 수정 공수를 3분의 1로 줄였습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Swiper', 'Thymeleaf', 'Kakao Map', 'GTM'],
       demoUrl: 'https://emoney.co.kr/'
     },
@@ -213,9 +205,9 @@ export const profile: Profile = {
       showcase: true,
       platform: 'mo',
       thumbnail: 'cssignal-mo',
-      summary: '증권사 앱 웹뷰 내장 서비스의 마크업 전량을 단독 담당',
+      summary: '키움증권 앱 웹뷰로 제공되는 조건검색시그널 서비스의 실시간 포착, 수익률 TOP·랭킹, 종목 상세, 체험하기 화면을 PC와 모바일용으로 퍼블리싱하고 차트 구현',
       description:
-        '본문 6개와 공통·에러 3개를 합쳐 9개 화면, 탭·팝업·바텀시트를 포함한 세부 뷰 15개를 일정 내 완료해 정상 오픈에 기여했습니다. 리셋 CSS와 Pretendard 가변폰트 자체 호스팅, 등락 컬러 규칙을 단일 정의로 통합해 퍼블리싱 소요를 30% 줄이고 320~768px 전 구간에서 동일한 렌더링을 확보했습니다.',
+        'Highcharts로 검색식별 수익률 비교 차트와 포착일·포착가를 표시한 주가 차트를 구현하고 툴팁·범례를 커스텀했습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Swiper', 'Highcharts', 'Thymeleaf'],
     },
     {
@@ -226,19 +218,8 @@ export const profile: Profile = {
       category: 'improve',
       summary: '3개 서비스 312개 파일을 전수 개선해 크롤링·색인 대응 체계 구축',
       description:
-        'onclick만 있어 크롤러가 인식하지 못하던 링크 99개에 href와 aria-label을 부여해 탐색 가능성과 접근성을 동시에 확보했습니다. div 위주 구조에 main·section 등 시맨틱 태그를 158건 적용해 문서 구조를 명확히 하고, 페이지별 title 207건과 meta·OG 태그 24건을 키워드 전치 구조로 재작성해 검색 결과 노출 문구를 표준화했습니다.',
+        'onclick만 있어 크롤러가 따라가지 못하던 링크 99개에 href와 aria-label을 부여했습니다. div 위주 구조에 시맨틱 태그 158건을 적용하고, title 207건과 meta·OG 24건을 키워드가 앞에 오도록 다시 썼습니다.',
       stack: ['HTML5', '시맨틱 마크업', 'XML sitemap', 'JSP', 'Thymeleaf', 'jQuery'],
-    },
-    {
-      id: 'vod-service',
-      title: '종목분석 VOD 서비스 런칭',
-      period: '2024.09 – 2024.11',
-      linkNote: '서비스 종료',
-      category: 'launch',
-      summary: '자동완성 검색창을 신설하고 진입점 6곳을 일괄 구축',
-      description:
-        'PC 헤더에 종목명·코드 자동완성 검색창을 만들어 신규 VOD 서비스의 상시 진입 경로를 확보했습니다. jQuery UI autocomplete를 도입하며 공통 preset에 라이브러리를 편입했고, PC·모바일 헤더·GNB·메인·전문가홈 탭·플로팅 버튼까지 진입점 6곳을 일괄 구축해 전 채널 동선을 일원화했습니다.',
-      stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery UI', 'SVG', 'Thymeleaf', 'JSP'],
     },
     {
       id: 'mk-signal-landing',
@@ -251,7 +232,7 @@ export const profile: Profile = {
       thumbnailMobile: 'mksignal-mo',
       summary: '시안 반영부터 배포·GA 등록까지 단독 제작',
       description:
-        '미디어쿼리 기반 반응형으로 구현해 PC·모바일 2벌 운영 없이 단일 소스로 전 기기에 대응했고, 유지보수 대상 파일을 절반으로 줄였습니다. 서비스 소개·핵심 기능·이용 안내를 섹션 단위로 구성하고 스크롤 위치와 무관하게 가입 CTA를 상시 노출해 유입에서 전환까지의 동선을 단축했습니다.',
+        '미디어쿼리 기반 반응형으로 PC·모바일 2벌 없이 단일 소스로 대응해 유지보수 대상 파일을 절반으로 줄였습니다. 가입 CTA는 스크롤 위치와 무관하게 상시 노출해 전환까지의 동선을 단축했습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Google Analytics (GA4)'],
       demoUrl: 'https://mksignal.com/mk'
     },
@@ -263,7 +244,7 @@ export const profile: Profile = {
       category: 'launch',
       summary: '증권사 3사 × 화면 14종, 총 42개 화면을 단독 퍼블리싱',
       description:
-        '단일 서비스를 신한투자증권·키움증권·하이투자증권 3개 제휴 채널로 확장했습니다. 공통 스타일과 헤더·상품메뉴·전략메뉴를 컴포넌트 4종으로 분리해, 공통 사양이 바뀔 때 증권사별로 3번 하던 수정을 1번으로 줄였습니다.',
+        '공통 스타일과 헤더·상품메뉴·전략메뉴를 컴포넌트 4종으로 분리해, 공통 사양이 바뀔 때 증권사별로 3번 하던 수정을 1번으로 줄였습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Ajax', 'JSP / JSTL'],
     },
     {
@@ -272,9 +253,9 @@ export const profile: Profile = {
       period: '2024.01 – 2024.02',
       linkNote: '사내 운영 페이지',
       category: 'improve',
-      summary: '중복 선언된 리소스를 공통 preset으로 단일화',
+      summary: 'include 한 줄로 최대 23개 리소스 선언을 대체',
       description:
-        '페이지마다 중복 선언되던 CSS·JS 라이브러리를 공통 preset으로 묶어 include 한 줄로 최대 23개 리소스 선언을 대체하고, 페이지 간 스타일 불일치를 구조적으로 제거했습니다. 이벤트 페이지에 흩어진 CSS 3개(279줄)를 common.css로 통합해 페이지당 요청을 3건 줄였고, preset 미적용 레거시 페이지 4개를 찾아 공통 GNB 서브메뉴 미노출 오류를 해결했습니다. SDK 충돌 페이지는 선별 분리해 통합 기준을 세웠습니다.',
+        '페이지마다 중복 선언되던 CSS·JS 라이브러리를 공통 preset으로 묶어 페이지 간 스타일 불일치를 구조적으로 없앴습니다. 이벤트 페이지의 CSS 3개는 common.css로 통합해 페이지당 요청을 3건 줄였습니다.',
       stack: ['HTML5', 'CSS3', 'jQuery', 'JSP (include)', 'Thymeleaf'],
     },
     {
@@ -283,7 +264,6 @@ export const profile: Profile = {
       period: '2023.07 – 2024.04',
       linkNote: '서비스 종료',
       category: 'launch',
-      /* 종료된 서비스라 캡처를 구하지 못하면 showcase를 지운다. Experience에는 그대로 남는다. */
       showcase: true,
       platform: 'mo',
       thumbnail: 'aigostock-mo',
