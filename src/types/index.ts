@@ -54,7 +54,6 @@ export interface Company {
 export interface Profile {
   name: string
   role: string
-  introLines: string[]
   tagline: string
   introduction: string[]
   strengths: Strength[]

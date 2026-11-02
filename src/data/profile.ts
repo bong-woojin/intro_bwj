@@ -19,12 +19,6 @@ export const PROJECT_CATEGORIES: { id: ProjectCategory; label: string }[] = [
 export const profile: Profile = {
   name: '봉우진',
   role: 'Frontend Developer',
-  introLines: [
-    '안녕하세요',
-    '퍼블리셔에서 프론트엔드까지',
-    '그리고 AI까지',
-    '발전하는 프론트엔드',
-  ],
   tagline: '화면부터 배포까지, 서비스 하나를 끝까지 만듭니다.',
   introduction: [
     '웹 퍼블리셔로 시작해 프론트엔드 개발까지 범위를 넓혀왔습니다. 주식·투자 도메인에서 사내 서비스의 화면을 혼자 맡아, 새 서비스를 열고 이어서 운영해 왔습니다.',

@@ -41,21 +41,14 @@ function vars(entries: Record<string, string>): CSSProperties {
   return entries as CSSProperties
 }
 
-interface StageOrbitProps {
-  /** 인트로가 걷히기 시작하면 true. 이때 마운트되어야 등장 연출이 보인다. */
-  active: boolean
-}
-
 /**
  * 퍼블리셔 · 프론트엔드 · AI가 겹쳐 도는 그림.
  *
  * 원이 하나씩 그려지고 → 셋이 모이면 중심이 켜지고 → 지시선이 뻗으며 문구가 타이핑된다.
  * 그 뒤로는 천천히 돌며, 아래 범례에 마우스를 올리면 해당 원만 남는다.
  */
-export function StageOrbit({ active }: StageOrbitProps) {
+export function StageOrbit() {
   const [hovered, setHovered] = useState<string | null>(null)
-
-  if (!active) return <div className="mx-auto aspect-4/5 w-full max-w-sm" />
 
   const lastDrawEnd = (RINGS.length - 1) * DRAW_STAGGER + DRAW_MS
 

@@ -38,7 +38,6 @@ src/
 │  ├─ useActiveSection.ts 현재 섹션 표시
 │  └─ useMediaQuery.ts    미디어쿼리 일치 여부 (Strengths 배치, Works 서랍의 열 수)
 ├─ components/
-│  ├─ intro/              첫 진입 인트로 (두 연출 + 껍데기 + 별하늘)
 │  ├─ hero/StageOrbit.tsx 첫 화면 오른쪽 세 원 그림
 │  ├─ works/              DeviceStage(모니터·폰 틀), WorkDialog(자세히 보기 팝업), ProjectMeta
 │  ├─ layout/             Header(로고 + 내비), Footer, BrandMark
@@ -49,7 +48,7 @@ src/
 
 ## 내용을 바꿀 때
 
-**`src/data/profile.ts` 하나만 고친다.** 이름, 소개 글, 인트로 문구, 강점, 기술, 프로젝트, 연락처가 모두 여기 있다. 화면 코드에는 문구를 직접 넣지 않는다.
+**`src/data/profile.ts` 하나만 고친다.** 이름, 소개 글, 강점, 기술, 프로젝트, 연락처가 모두 여기 있다. 화면 코드에는 문구를 직접 넣지 않는다.
 
 `index.html`의 `<title>`과 `description`은 별도로 관리하므로 이름이 바뀌면 함께 고친다.
 
@@ -89,29 +88,6 @@ thumbnailMobile: 'mksignal-mo',  // 앞에 겹친 폰
 
 **순서가 곧 의미다.** `STAGES`의 순서를 바꾸면 세 곳이 함께 바뀐다. Strengths 카드는 배열 순서로 색을 가져가므로 `profile.strengths`의 순서도 같이 맞춘다.
 
-### 인트로는 두 연출을 모두 남긴다
-
-`components/intro/variant.ts`의 `INTRO_VARIANT` 한 줄로 전환한다.
-
-```ts
-export const INTRO_VARIANT: IntroVariant = 'kinetic'  // 어절 모션
-// 'subtle' — 페이드 + 블러 (이전 버전)
-```
-
-지우지 않고 둘 다 유지하는 이유는 되돌릴 때 코드를 다시 쓰지 않기 위해서다.
-
-### 타임라인은 내용에서 계산한다
-
-인트로 시점을 손으로 박지 않는다. `profile.introLines`의 어절 수에서 자동으로 계산하므로 문구를 늘리거나 줄여도 뒤 순서가 알아서 밀린다.
-
-**가장 어절이 많은 줄이 전체 속도를 결정한다.** 한 줄에 어절을 많이 넣으면 인트로 전체가 길어진다.
-
-### 뒤 화면 연출은 인트로가 걷힐 때 시작한다
-
-컴포넌트를 마운트하는 순간부터 CSS 애니메이션이 돌기 때문에, 페이지 로드와 동시에 시작하면 **인트로에 가려진 채로 다 끝나 버린다.**
-
-`App` → `IntroOverlay.onExitStart` → `heroReady` → `Hero` → `StageOrbit.active` 순으로 신호를 넘긴다. 첫 화면에 새 연출을 추가할 때도 같은 신호를 쓴다.
-
 ---
 
 ## 애니메이션에서 반복해서 부딪힌 함정
@@ -126,7 +102,7 @@ export const INTRO_VARIANT: IntroVariant = 'kinetic'  // 어절 모션
 
 `letter-spacing`은 글자 사이가 아니라 **각 글자 뒤**에 붙는다. 마지막 글자 뒤 빈칸까지 폭에 포함되어 글자가 왼쪽으로 치우친다.
 
-같은 크기의 음수 `margin-right`로 상쇄한다. 자간이 애니메이션으로 변하면 여백도 같은 키프레임에서 함께 움직여야 한다. (`kin-track`, `kin-role`)
+같은 크기의 음수 `margin-right`로 상쇄한다. 자간이 애니메이션으로 변하면 여백도 같은 키프레임에서 함께 움직여야 한다.
 
 ### 회전하는 그룹에 글자를 넣지 않는다
 
@@ -251,7 +227,6 @@ linkNote: '서비스 종료'         // 내린 서비스
 ## 접근성
 
 - 모든 애니메이션이 `prefers-reduced-motion: reduce`를 존중한다. 새 애니메이션을 추가하면 `index.css` 하단의 해당 미디어쿼리에도 등록한다.
-- 인트로가 도는 동안 본문은 `inert`로 키보드 포커스를 막고, `body.overflow`로 스크롤을 잠근다.
 - 색만으로 정보를 전달하지 않는다. 세 축은 색과 함께 이름을 항상 적는다.
 
 ## 다크 테마 고정

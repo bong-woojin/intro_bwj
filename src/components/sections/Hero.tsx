@@ -4,12 +4,7 @@ import { profile } from '@/data/profile'
 import { useInView } from '@/hooks/useInView'
 import { revealDelay as delay } from '@/lib/reveal'
 
-interface HeroProps {
-  /** 인트로가 걷히기 시작하면 true. 오른쪽 그림의 등장 연출이 이때 시작된다. */
-  heroReady: boolean
-}
-
-export function Hero({ heroReady }: HeroProps) {
+export function Hero() {
   const { ref, inView } = useInView<HTMLDivElement>()
   const introEnd = 260 + profile.introduction.length * 90
 
@@ -113,7 +108,7 @@ export function Hero({ heroReady }: HeroProps) {
           {/* 퍼블리셔 · 프론트엔드 · AI가 맞물려 도는 그림.
               좁은 화면에서는 감춘다. 같은 이야기를 Strengths가 근거까지 붙여 다시 한다. */}
           <div className="reveal hidden lg:block" style={delay(introEnd + 140)}>
-            <StageOrbit active={heroReady} />
+            <StageOrbit />
           </div>
         </div>
       </div>
