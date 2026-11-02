@@ -93,7 +93,7 @@ export const profile: Profile = {
       thumbnailMobile: 'airbnb-mo',
       summary: '숙소 검색부터 예약 요청까지의 흐름을 Next.js App Router로 구현',
       description:
-        '검색 조건을 전역 상태 대신 URL에 두고 서버 컴포넌트가 searchParams로 필터링하게 해, 새로고침·뒤로가기·링크 공유가 그대로 재현되도록 했습니다. 실제로는 별개의 DOM인 확장·압축 검색바는 FLIP으로 위치와 크기를 보간해 하나처럼 변형되게 했습니다.',
+        '에어비앤비의 검색·필터링 경험을 참고해 만든 개인 프로젝트입니다. 검색 조건을 URL에 담아, 새로고침·뒤로가기·링크 공유 때도 같은 검색 결과가 그대로 나오게 했습니다.',
       stack: [
         'Next.js 16',
         'React 19',
@@ -115,7 +115,7 @@ export const profile: Profile = {
       thumbnail: 'coinflow-pc',
       summary: '업비트 원화마켓 전 종목의 실시간 시세를 다루는 데스크톱 대시보드',
       description:
-        '초당 수십 건씩 들어오는 시세에도 289개 종목 표가 끊기지 않도록, 수신한 값을 200ms 단위로 모아 반영하고 값이 바뀐 행만 다시 그리게 했습니다. React DevTools Profiler로 전후를 측정해 렌더링 횟수를 80% 줄이고, 가장 오래 걸리던 렌더를 151ms에서 7ms로 단축했습니다.',
+        '시세가 초당 수십 건씩 들어와도 289개 종목 표가 끊기지 않게 만드는 것이 과제였던 개인 프로젝트입니다. 수신한 값을 200ms 단위로 모아 반영하고 값이 바뀐 행만 다시 그리게 해, 렌더링 횟수를 80% 줄이고 가장 오래 걸리던 렌더를 151ms에서 7ms로 단축했습니다.',
       stack: [
         'React 19',
         'TypeScript',
@@ -139,7 +139,7 @@ export const profile: Profile = {
       thumbnailMobile: 'aisignal-lp-mo',
       summary: '검색 유입을 위한 랜딩·리포트 페이지를 환경 구성부터 배포까지 단독 구축',
       description:
-        '검색 유입이 목적인 페이지로 SEO·AEO·GEO를 전담했습니다. 서버에서 화면을 완성해 보내 검색엔진이 바로 읽게 하고, 국내 전 종목 리포트를 템플릿 하나로 자동 생성해 종목마다 제목·설명과 구조화 데이터, 사이트맵을 갖춰 종목명 검색 유입 경로를 만들었습니다. AI 답변과 생성형 검색에도 인용되도록 AI 크롤러를 허용하고 llms.txt를 설계했습니다.',
+        'AI시그널프로를 검색으로 알리기 위해 따로 만든 페이지로, 국내 전 종목의 리포트를 종목별 페이지로 보여 줍니다. SEO·AEO·GEO를 전담해 종목마다 제목·설명·구조화 데이터와 사이트맵을 갖춘 페이지를 서버에서 완성해 보내 종목명 검색 유입 경로를 만들고, AI 크롤러 허용과 llms.txt로 AI 답변·생성형 검색에도 인용되게 했습니다.',
       stack: [
         'React 19',
         'Next.js 16',
@@ -162,7 +162,7 @@ export const profile: Profile = {
       thumbnail: 'aisignal-mo',
       summary: '모바일 웹·앱 웹뷰 전 화면의 퍼블리싱과 UI 개발 단독 담당',
       description:
-        '반복되는 UI를 다이얼로그·바텀시트 등 공통 컴포넌트로 분리해 이후 화면은 조합만으로 만들 수 있게 했고, Highcharts·amCharts로 차트 UI를 구현했습니다. 미국주식을 추가할 때는 국가 상태를 Pinia로 중앙화해 토글 하나로 국내·미국이 함께 바뀌게 했고, 미국 화면은 기존 마크업 재사용만으로 구축했습니다.',
+        'AI가 분석한 종목과 매매시그널을 국내·미국 주식으로 제공하는 종목추천 서비스입니다. Highcharts·amCharts로 차트 UI를 구현했고, 국가 상태를 Pinia로 한곳에 모아 토글 하나로 국내·미국이 함께 바뀌게 해 미국 화면은 기존 마크업 재사용만으로 구축했습니다.',
       stack: [
         'Vue 3',
         'Nuxt 3',
@@ -186,7 +186,7 @@ export const profile: Profile = {
       thumbnailMobile: 'emoney-mo',
       summary: '메인·회사소개·비즈니스와 공통 영역 전량을 단독 담당해 일정 내 오픈',
       description:
-        '흩어져 있던 5개 페이지를 탭·스크롤 연동 구조의 3개로 통합해 페이지 이동 없이 전체를 탐색하게 했습니다. 3개 파일에 중복되던 헤더·GNB·푸터를 Thymeleaf fragment 하나로 묶어, 오픈 후 반복된 로고·문구 수정 공수를 3분의 1로 줄였습니다.',
+        '재직 중인 (주)이머니의 공식 홈페이지를 전면 개편한 프로젝트입니다. 흩어져 있던 5개 페이지를 탭·스크롤 연동 구조의 3개로 합치고, 중복되던 헤더·GNB·푸터를 하나로 묶어 오픈 후 반복된 수정 공수를 3분의 1로 줄였습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Swiper', 'Thymeleaf', 'Kakao Map', 'GTM'],
       demoUrl: 'https://emoney.co.kr/'
     },
@@ -201,7 +201,7 @@ export const profile: Profile = {
       thumbnail: 'cssignal-mo',
       summary: '키움증권 앱 웹뷰로 제공되는 조건검색시그널 서비스의 실시간 포착, 수익률 TOP·랭킹, 종목 상세, 체험하기 화면을 PC와 모바일용으로 퍼블리싱하고 차트 구현',
       description:
-        'Highcharts로 검색식별 수익률 비교 차트와 포착일·포착가를 표시한 주가 차트를 구현하고 툴팁·범례를 커스텀했습니다.',
+        '키움증권 영웅문 앱 안에서 제공되는 서비스로, 조건검색식에 맞는 종목을 실시간으로 포착하고 검색식별 수익률을 보여 줍니다. Highcharts로 수익률 비교 차트와 포착일·포착가를 표시한 주가 차트를 만들어, 언제 얼마에 포착됐는지 차트에서 바로 읽히게 했습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Swiper', 'Highcharts', 'Thymeleaf'],
     },
     {
@@ -212,7 +212,7 @@ export const profile: Profile = {
       category: 'improve',
       summary: '3개 서비스 312개 파일을 전수 개선해 크롤링·색인 대응 체계 구축',
       description:
-        'onclick만 있어 크롤러가 따라가지 못하던 링크 99개에 href와 aria-label을 부여했습니다. div 위주 구조에 시맨틱 태그 158건을 적용하고, title 207건과 meta·OG 24건을 키워드가 앞에 오도록 다시 썼습니다.',
+        '검색엔진이 링크와 문서 구조를 제대로 읽지 못하던 기존 사내 서비스들을 손본 작업입니다. 크롤러가 따라가지 못하던 링크 99개를 정상 링크로 고치고, 시맨틱 태그 158건 적용과 title 207건·meta·OG 24건 재작성으로 검색 결과에 키워드가 앞에 보이게 했습니다.',
       stack: ['HTML5', '시맨틱 마크업', 'XML sitemap', 'JSP', 'Thymeleaf', 'jQuery'],
     },
     {
@@ -226,7 +226,7 @@ export const profile: Profile = {
       thumbnailMobile: 'mksignal-mo',
       summary: '시안 반영부터 배포·GA 등록까지 단독 제작',
       description:
-        '미디어쿼리 기반 반응형으로 PC·모바일 2벌 없이 단일 소스로 대응해 유지보수 대상 파일을 절반으로 줄였습니다. 가입 CTA는 스크롤 위치와 무관하게 상시 노출해 전환까지의 동선을 단축했습니다.',
+        'MK시그널 서비스를 소개하고 가입을 유도하는 홍보용 랜딩페이지입니다. 소스 하나가 화면 폭에 맞춰 바뀌는 반응형으로 만들어 PC·모바일 두 벌 없이 관리 파일을 절반으로 줄였고, 가입 버튼은 스크롤 위치와 무관하게 늘 보이게 했습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Google Analytics (GA4)'],
       demoUrl: 'https://mksignal.com/mk'
     },
@@ -238,7 +238,7 @@ export const profile: Profile = {
       category: 'launch',
       summary: '증권사 3사 × 화면 14종, 총 42개 화면을 단독 퍼블리싱',
       description:
-        '공통 스타일과 헤더·상품메뉴·전략메뉴를 컴포넌트 4종으로 분리해, 공통 사양이 바뀔 때 증권사별로 3번 하던 수정을 1번으로 줄였습니다.',
+        '로보스탁 서비스를 신한투자증권·키움증권·하이투자증권 3개 제휴 채널로 넓히며 만든 소개·체험 페이지입니다. 공통 스타일과 헤더·메뉴를 컴포넌트 4종으로 분리해, 공통 사양이 바뀔 때 증권사별로 3번 하던 수정을 1번으로 줄였습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Ajax', 'JSP / JSTL'],
     },
     {
@@ -247,9 +247,9 @@ export const profile: Profile = {
       period: '2024.01 – 2024.02',
       linkNote: '사내 운영 페이지',
       category: 'improve',
-      summary: 'include 한 줄로 최대 23개 리소스 선언을 대체',
+      summary: '공통 preset 한 줄로 최대 23개 리소스 선언을 대체',
       description:
-        '페이지마다 중복 선언되던 CSS·JS 라이브러리를 공통 preset으로 묶어 페이지 간 스타일 불일치를 구조적으로 없앴습니다. 이벤트 페이지의 CSS 3개는 common.css로 통합해 페이지당 요청을 3건 줄였습니다.',
+        '운영 중인 사내 페이지들이 CSS·JS 라이브러리를 불러오는 방식을 정리한 리팩토링입니다. 페이지마다 따로 적던 선언을 공통 preset으로 묶어 페이지 간 스타일이 어긋나지 않게 했고, 이벤트 페이지의 CSS 3개를 하나로 합쳐 페이지당 요청을 3건 줄였습니다.',
       stack: ['HTML5', 'CSS3', 'jQuery', 'JSP (include)', 'Thymeleaf'],
     },
     {
@@ -263,7 +263,7 @@ export const profile: Profile = {
       thumbnail: 'aigostock-mo',
       summary: '22개 화면의 프론트엔드 마크업을 1인 단독 담당해 정상 오픈',
       description:
-        '메인·종목 상세분석·급등주·HOT섹터·리포트·포트폴리오·정기결제 해지 등 본문 16개와 공통 6개, 총 22개 화면을 단독으로 맡아 일정 내 완료했습니다. 1rem을 10px로 두는 반응형 체계와 px→rem 환산 규칙을 세워 320~768px 전 구간에서 동일한 비율로 렌더링되도록 하고, 화면당 퍼블리싱 소요 시간을 30% 줄였습니다.',
+        'AI가 추천한 종목과 급등주·섹터·리포트를 보여 주던 모바일 웹 서비스입니다. 글자와 여백이 화면 폭에 맞춰 함께 줄고 늘도록 1rem=10px 기준과 px→rem 환산 규칙을 세워, 화면당 퍼블리싱 시간을 30% 줄였습니다.',
       stack: ['HTML5', 'CSS3', 'JavaScript', 'jQuery', 'Swiper', 'ApexCharts', 'Ajax', 'JSP'],
     },
   ],
