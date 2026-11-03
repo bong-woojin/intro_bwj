@@ -572,6 +572,30 @@
   animation: scroll-cue 1.9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
+@keyframes resume-nudge {
+  0%,
+  6% {
+    translate: 0 0;
+    animation-timing-function: ease-out;
+  }
+  4% {
+    translate: 0 -6px;
+    animation-timing-function: ease-in;
+  }
+  8% {
+    translate: 0 -2.5px;
+    animation-timing-function: ease-in;
+  }
+  10%,
+  100% {
+    translate: 0 0;
+  }
+}
+
+.resume-nudge {
+  animation: resume-nudge 5s ease-out 2s infinite;
+}
+
 /* ── 모션 최소화 설정 존중 ────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
@@ -579,7 +603,8 @@
     scroll-behavior: auto;
   }
 
-  .scroll-cue-bar {
+  .scroll-cue-bar,
+  .resume-nudge {
     animation: none !important;
   }
 

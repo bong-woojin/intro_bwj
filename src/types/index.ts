@@ -56,6 +56,7 @@ export interface Profile {
   role: string
   tagline: string
   introduction: string[]
+  resumeUrl?: string
   strengths: Strength[]
   skills: SkillGroup[]
   company: Company
