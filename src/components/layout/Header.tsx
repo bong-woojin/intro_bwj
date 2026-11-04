@@ -51,6 +51,8 @@ export function Header() {
     return () => cancelAnimationFrame(frame)
   }, [pill, pillReady])
 
+  const activeLabel = SECTIONS.find((section) => section.id === active)?.label
+
   return (
     <header className="sticky top-0 z-50 border-b border-line/70 bg-ink/70 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-6">
@@ -62,12 +64,17 @@ export function Header() {
           <BrandMark />
           {/* 좁은 화면에서는 마크만 남긴다. 내비에 자리를 내주기 위해서다. */}
           <span className="hidden text-sm font-bold tracking-[0.12em] sm:inline">BWJ</span>
+          {activeLabel && (
+            <span key={activeLabel} className="nav-current text-sm font-semibold sm:hidden" aria-hidden="true">
+              {activeLabel}
+            </span>
+          )}
         </a>
 
         <nav aria-label="주요 섹션">
           {/* 360px에서는 다섯 항목의 글자가 들어가지 않는다.
               좁은 화면에서는 점으로 바꿔 현재 위치만 알리고, 넓어지면 이름을 되살린다. */}
-          <ul ref={listRef} className="relative flex items-center gap-1 sm:gap-2">
+          <ul ref={listRef} className="relative flex items-center gap-0 sm:gap-2">
             {/* 좁은 화면은 점으로 위치를 알리므로 배경은 넓은 화면에서만 쓴다 */}
             {pill && (
               <li
@@ -94,7 +101,7 @@ export function Header() {
                     href={section.href ?? `#${section.id}`}
                     aria-label={section.label}
                     aria-current={isActive ? 'true' : undefined}
-                    className={`relative flex items-center justify-center rounded-full transition-colors max-sm:size-9 sm:px-3 sm:py-1.5 sm:text-sm ${
+                    className={`relative flex items-center justify-center rounded-full transition-colors max-sm:size-8 sm:px-3 sm:py-1.5 sm:text-sm ${
                       isActive
                         ? 'sm:text-white'
                         : 'sm:text-muted sm:hover:bg-surface sm:hover:text-fg'

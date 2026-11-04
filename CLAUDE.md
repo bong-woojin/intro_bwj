@@ -264,7 +264,4 @@ npm run dev
 
 ## 남은 작업
 
-- **링크 공유 미리보기** — `index.html`에 `og:image`가 없어 메신저에 주소를 보내면 글자만 뜬다.
-- **설명 글 줄이기** — description이 대부분 5~6문장 문단이라 팝업에서 길다. 하나씩 줄이는 중.
-- **배포** — GitHub 저장소 연결 후 Vercel이 가장 간단하다.
 - **개인 프로젝트 추가** — `category: 'personal'`, `showcase: true`, `platform`, 스크린샷을 넣으면 Works 첫 줄에 들어간다.
